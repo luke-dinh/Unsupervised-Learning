@@ -1,4 +1,5 @@
 import torch
+from torch.optim import Adam
 import numpy as np
 from torchvision import datasets
 from torchvision.utils import make_grid
@@ -41,3 +42,20 @@ class ImproveChecker():
 				print("[%s] Not improved from %.4f" % (self.__class__.__name__, self.best_val))
 				return False
 
+# Load model
+model = ae.ae(in_dims=784, encod_dims=64)
+
+# Load dataset
+dataset = datasets.MNIST(root='.', train=True, download=True,
+                            transform= transforms.Compose([ 
+                                transforms.ToTensor(),
+                                transforms.Normalize((0.1307,), (0.3081,))
+                            ]))
+
+dataloader = dataloader.DataLoader(dataset, batch_size=128, num_workers=4, shuffle=True, pin_memory=True)
+
+# Optimizer
+optimizer = Adam(model.parameters(), lr=1e-3)
+
+# Improve Checker
+improvechecker = ImproveChecker(mode='min')
