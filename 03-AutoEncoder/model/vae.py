@@ -39,3 +39,27 @@ class vae(nn.Module):
         ]))
 
         self._init_weights()
+
+    def _init_weights(self):
+
+        for m in self.modules():
+            if isinstance(m, nn.Linear):
+                m.weight.data.normal_(0, 0.01)
+                m.bias.data.zero_()
+            elif isinstance(m, nn.BatchNorm2d):
+                m.weight.data.fill_(1)
+                m.bias.data.zero_()
+
+    def represent(self, x):
+        h = self.encoder(x)
+        muy, logvar = self.fc_muy(h), self.fc_var(h)
+        z = self._reparameterize(muy, logvar)
+        return z 
+
+    def _reparameterize(self, muy, logvar):
+        std = logvar.mul(0.5).exp_()
+        esp = torch.randn(*muy.size()).type_as(muy)
+        z = muy + std * esp 
+        return z 
+
+    
