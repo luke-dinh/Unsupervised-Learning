@@ -10,7 +10,7 @@ class vae(nn.Module):
 
     def __init__(self, in_dims=784, encod_dims=64, negative_slope=0.1):
 
-        super(vae, self).__init__
+        super(vae, self).__init__()
         # Encoder
 
         self.encoder = nn.Sequential(OrderedDict([ 
@@ -62,4 +62,29 @@ class vae(nn.Module):
         z = muy + std * esp 
         return z 
 
-    
+    def forward(self, x):
+        if self.training:
+
+            h = self.encoder(x)
+            muy, logvar = self.fc_muy(h), self.fc_var(h)
+            z = self._reparameterize(muy, logvar)
+            y = self.decoder(z)
+
+            return y, muy, logvar 
+
+        else:
+            z = self.represent(x)
+            y = self.decoder(z)
+
+            return y
+
+# Test 
+
+if __name__ == "__main__":
+    model = vae(in_dims=784, encod_dims=64, negative_slope=0.1)
+    model.eval()
+
+    input = torch.randn([1, 784])
+    output = model(input)
+
+    print(output.shape)
