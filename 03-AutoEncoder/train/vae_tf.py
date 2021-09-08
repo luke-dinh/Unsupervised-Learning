@@ -2,6 +2,7 @@ import keras
 from keras.layers import Dense
 from keras.datasets import mnist
 from keras import backend as K
+import numpy as np
 
 encoding_dim = 64
 latent_dims = 2
@@ -59,3 +60,12 @@ kl_loss *= -0.5
 vae_loss = K.mean(recon_loss + kl_loss)
 vae.add_loss(vae_loss)
 vae.compile(optimizer='adam')
+
+# Train the model with MNIST dataset
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+
+x_train, x_test = x_train.astype('float32')/255.0, x_test.astype('float32')/255.0
+x_train = x_train.reshape((len(x_train), np.prod(x_train.shape[1:])))
+x_test = x_test.reshape((len(x_train), np.prod(x_test.shape[1:])))
+
+vae.fit(x_train, x_train, batch_size=128, epochs=50, verbose=1, validation_data=(x_test, x_test))
