@@ -31,3 +31,17 @@ def sampling(args):
 z = keras.layers.Lambda(sampling)([z_mean, z_log_sigma])
 encoder = keras.Model(inputs, [z_mean, z_log_sigma, z], name='encoder')
 
+latent_inputs = keras.Input(shape=(latent_dims, ), name='z_sampling')
+x = Dense(encoding_dim, activation='relu')(latent_inputs)
+
+# Decoder block
+decode = Dense(128, activation='relu')(x)
+decode = Dense(256, activation='relu')(decode)
+decode = Dense(512, activation='relu')(decode)
+output = Dense(784, activation='sigmoid')(decode)
+
+decoder = keras.Model(latent_inputs, output, name='decoder')
+
+final_out = decoder(encoder(inputs)[2])
+
+vae = keras.Model(inputs, final_out, name='vae')
