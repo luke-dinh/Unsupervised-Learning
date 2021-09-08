@@ -45,3 +45,17 @@ decoder = keras.Model(latent_inputs, output, name='decoder')
 final_out = decoder(encoder(inputs)[2])
 
 vae = keras.Model(inputs, final_out, name='vae')
+
+# Loss
+recon_loss = keras.losses.binary_crossentropy(inputs, final_out)
+recon_loss *= 784
+
+# KL Divergence
+kl_loss = 1 + z_log_sigma - K.square(z_mean) - K.exp(z_log_sigma)
+kl_loss = K.sum(kl_loss, axis=-1)
+kl_loss *= -0.5
+
+# Total loss
+vae_loss = K.mean(recon_loss + kl_loss)
+vae.add_loss(vae_loss)
+vae.compile(optimizer='adam')
