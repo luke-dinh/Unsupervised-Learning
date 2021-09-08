@@ -1,6 +1,7 @@
 import keras
 from keras.datasets import mnist
 from keras.layers import Dense
+import numpy as np
 
 encoding_dim = 64
 
