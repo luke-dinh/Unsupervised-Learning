@@ -64,8 +64,9 @@ vae.compile(optimizer='adam')
 # Train the model with MNIST dataset
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
-x_train, x_test = x_train.astype('float32')/255.0, x_test.astype('float32')/255.0
+x_train = x_train.astype('float32')/255.0
+x_test = x_test.astype('float32')/255.0
 x_train = x_train.reshape((len(x_train), np.prod(x_train.shape[1:])))
-x_test = x_test.reshape((len(x_train), np.prod(x_test.shape[1:])))
+x_test = x_test.reshape((len(x_test), np.prod(x_test.shape[1:])))
 
 vae.fit(x_train, x_train, batch_size=128, epochs=50, verbose=1, validation_data=(x_test, x_test))
