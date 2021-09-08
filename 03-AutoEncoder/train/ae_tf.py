@@ -1,8 +1,6 @@
 import keras
-from keras.models import Sequential
 from keras.datasets import mnist
-from keras.layers import Dense, Flatten
-import numpy as np
+from keras.layers import Dense
 
 encoding_dim = 64
 
