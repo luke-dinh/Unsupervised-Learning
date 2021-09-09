@@ -6,6 +6,7 @@ import torchvision.transforms as transforms
 import torch.nn.functional as F
 from collections import OrderedDict
 import numpy as np
+import os 
 
 # Define model
 class VAE(nn.Module):
@@ -72,6 +73,12 @@ class VAE(nn.Module):
 # from model import vae
 # model = vae.vae(in_dims = in_dims=784, encod_dims=64, negative_slope=0.1)
 
+# Loss function
+def loss_fn(recon_x, x, mu, logvar):
+    BCE = F.mse_loss(recon_x, x)
+    KLD = -0.5 * torch.mean(1 + logvar - mu.pow(2) - logvar.exp())
+    return BCE + KLD
+
 # Load checker
 
 class ImproveChecker():
@@ -107,3 +114,48 @@ class ImproveChecker():
 # Load model
 model = VAE(in_dims=784, encod_dims=64)
 
+dataset = MNIST(root='.', train=True, download=True,
+                            transform= transforms.Compose([ 
+                                transforms.ToTensor(),
+                                transforms.Normalize((0.1307,), (0.3081,))
+                            ]))
+
+dataloader = DataLoader(dataset, batch_size=128, num_workers=4, shuffle=True, pin_memory=True)
+
+# Optimizer
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+
+# Improve Checker
+improvechecker = ImproveChecker(mode='min')
+
+# Making directory to save weights
+new_path = '/Unsupervised-Learning/03-AutoEncoder/checkpoint'
+if not os.path.exists(new_path):
+	os.makedirs(new_path)
+
+model.train()
+for epoch in range(1, 50):
+	for i, (imgs, _) in enumerate(dataloader):
+		# Prepare input
+		inputs = imgs.view(imgs.shape[0], -1)
+		# inputs = inputs.cuda()
+
+		# Train
+		optimizer.zero_grad()
+		outputs = model(inputs)
+		loss = loss_fn(outputs, inputs)
+		loss.backward()
+		optimizer.step()
+
+	# ImproveChecker
+	print("[EPOCH %.3d] Loss: %.6f" % (epoch, loss.item()))
+	if improvechecker.check(loss.item()):
+		checkpoint = dict(
+			epoch=epoch,
+			loss=loss.item(),
+			state_dict=model.state_dict(),
+			optimizer=optimizer.state_dict(),
+		)
+		save_file = os.path.join(new_path, "/ae.pth")
+		torch.save(checkpoint, save_file)
+		print("Best checkpoint is saved at %s" % (save_file))
