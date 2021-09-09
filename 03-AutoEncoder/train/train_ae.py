@@ -114,7 +114,7 @@ optimizer = Adam(model.parameters(), lr=1e-3)
 improvechecker = ImproveChecker(mode='min')
 
 # Making directory to save weights
-new_path = '/Unsupervised-Learning/03-AutoEncoder/checkpoint'
+new_path = '03-AutoEncoder/checkpoint'
 if not os.path.exists(new_path):
 	os.makedirs(new_path)
 
