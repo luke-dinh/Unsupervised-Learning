@@ -129,12 +129,13 @@ optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 improvechecker = ImproveChecker(mode='min')
 
 # Making directory to save weights
-new_path = '/Unsupervised-Learning/03-AutoEncoder/checkpoint'
+new_path = '03-AutoEncoder/checkpoint'
 if not os.path.exists(new_path):
 	os.makedirs(new_path)
 
+
 model.train()
-for epoch in range(1, 50):
+for epoch in range(1, 301):
 	for i, (imgs, _) in enumerate(dataloader):
 		# Prepare input
 		inputs = imgs.view(imgs.shape[0], -1)
@@ -142,8 +143,8 @@ for epoch in range(1, 50):
 
 		# Train
 		optimizer.zero_grad()
-		outputs = model(inputs)
-		loss = loss_fn(outputs, inputs)
+		outputs, mu, logvar = model(inputs)
+		loss = loss_fn(outputs, inputs, mu, logvar)
 		loss.backward()
 		optimizer.step()
 
@@ -156,6 +157,6 @@ for epoch in range(1, 50):
 			state_dict=model.state_dict(),
 			optimizer=optimizer.state_dict(),
 		)
-		save_file = os.path.join(new_path, "/ae.pth")
+		save_file = os.path.join(new_path, "vae.pth")
 		torch.save(checkpoint, save_file)
 		print("Best checkpoint is saved at %s" % (save_file))
