@@ -8,7 +8,7 @@ from collections import OrderedDict
 
 # Define model
 class VAE(nn.Module):
-    def __init__(self, in_dims=784, hid_dims=100, negative_slope=0.1):
+    def __init__(self, in_dims=784, encod_dims=64, negative_slope=0.1):
         super(VAE, self).__init__()
         # Encoder
         self.encoder = nn.Sequential(OrderedDict([
@@ -19,11 +19,11 @@ class VAE(nn.Module):
             ('layer3', nn.Linear(256, 128)),
             ('relu3', nn.LeakyReLU(negative_slope=negative_slope, inplace=True)),
         ]))
-        self.fc_mu = nn.Linear(128, hid_dims)
-        self.fc_var = nn.Linear(128, hid_dims)
+        self.fc_mu = nn.Linear(128, encod_dims)
+        self.fc_var = nn.Linear(128, encod_dims)
         # Decoder
         self.decoder = nn.Sequential(OrderedDict([
-            ('layer1', nn.Linear(hid_dims, 128)),
+            ('layer1', nn.Linear(encod_dims, 128)),
             ('relu1', nn.LeakyReLU(negative_slope=negative_slope, inplace=True)),
             ('layer2', nn.Linear(128, 256)),
             ('relu2', nn.LeakyReLU(negative_slope=negative_slope, inplace=True)),
@@ -66,4 +66,8 @@ class VAE(nn.Module):
             elif isinstance(m, nn.BatchNorm2d):
                 m.weight.data.fill_(1)
                 m.bias.data.zero_()
+
+# Or 
+# from model import vae
+# model = vae.vae(in_dims = in_dims=784, encod_dims=64, negative_slope=0.1)
 
