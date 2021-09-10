@@ -6,7 +6,7 @@ import torch.nn.functional as F
 
 class cae(nn.Module):
 
-    def __init__(self, inp_size=(64,64,3), encod_dims=64, negative_slope=0.1):
+    def __init__(self, negative_slope=0.1):
 
         super(cae, self).__init__()
 
@@ -14,7 +14,7 @@ class cae(nn.Module):
         self.encoder= nn.Sequential(OrderedDict([ 
             ('layer1', nn.Conv2d(in_channels=3, out_channels=16, kernel_size=3, padding=1)),
             ('relu1', nn.LeakyReLU(negative_slope, inplace=True)),
-            ('pooling1', nn.MaxPool2d(kernel_size=2))
+            ('pooling1', nn.MaxPool2d(kernel_size=2)),
             ('layer2', nn.Conv2d(in_channels=16, out_channels=32, kernel_size=3, padding=1)),
             ('relu2', nn.LeakyReLU(negative_slope, inplace=True)),
             ('pooling2', nn.MaxPool2d(kernel_size=2)),
@@ -29,3 +29,25 @@ class cae(nn.Module):
         ]))
 
         self._init_weights()
+
+    def _init_weights(self):
+        for m in self.modules():
+            if isinstance(m, nn.Linear):
+                m.weight.data.normal_(0, 0.01)
+                m.bias.data.zero_()
+            elif isinstance(m, nn.BatchNorm2d):
+                m.weight.data.fill_(1)
+                m.bias.data.zero_()
+
+    def forward(self, x):
+        z = self.encoder(x)
+        out = self.decoder(z)
+
+        return out 
+
+# Test 
+if __name__ == "__main__":
+    model = cae(negative_slope=0.1)
+    model.eval()
+
+    print(model)
