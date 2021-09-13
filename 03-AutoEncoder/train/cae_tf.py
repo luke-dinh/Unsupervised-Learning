@@ -1,6 +1,6 @@
 import keras
 from keras.layers import Conv2D, Conv2DTranspose, LeakyReLU, MaxPool2D
-from keras.datasets import cifar100
+from keras.datasets import cifar10
 import numpy as np
 
 # Define model
@@ -26,10 +26,12 @@ cae = keras.Model(input_image, decode)
 cae.compile(optimizer='adam', loss='binary_crossentropy')
 
 
-(x_train, _), (x_test, _) = cifar100.load_data()
+(x_train, _), (x_test, _) = cifar10.load_data()
 
 x_train = x_train.astype('float32')/255.0
 x_train = x_train.reshape((len(x_train), np.prod(x_train.shape[1:])))
 
 x_test = x_test.astype('float32')/255.0
 x_test = x_test.reshape((len(x_test), np.prod(x_test.shape[1:])))
+
+cae.fit(x_train, x_train, epochs=50, batch_size=128, validation_data=(x_test, x_test), shuffle=True)
