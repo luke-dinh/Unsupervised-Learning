@@ -25,3 +25,10 @@ class cae(nn.Module):
         ]))
 
         #Decoder
+        self.decoder = nn.Sequential(OrderedDict([ 
+            ('conv1', nn.ConvTranspose2d(32, 16, 3, stride=2)),
+            ('relu1', nn.LeakyReLU(negative_slope, inplace=True)),
+            ('conv2', nn.ConvTranspose2d(16, 3, 3, stride=2)),
+            # ('relu2', nn.LeakyReLU(negative_slope, inplace=True)),
+            ('sigmoid', nn.Sigmoid()),
+        ]))
