@@ -2,7 +2,6 @@ import torch
 from torch import nn 
 from torchvision.datasets import CIFAR10
 from torch.utils.data import DataLoader
-from torchvision.datasets.cityscapes import Cityscapes 
 import torchvision.transforms as transforms 
 import torch.nn.functional as F
 from collections import OrderedDict
@@ -89,3 +88,9 @@ dataset = CIFAR10(
 	])
 )
 
+dataloader = DataLoader(dataset, batch_size=128, num_workers=4, shuffle=True, pin_memory=True)
+model = LitCAE()
+
+# Training
+trainer = pl.Trainer(precision=16, limit_train_batches=0.5)
+trainer.fit(model, dataloader)
