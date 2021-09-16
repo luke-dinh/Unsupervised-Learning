@@ -1,6 +1,6 @@
 import torch
 from torch import nn 
-from torchvision.datasets import CIFAR10
+from torchvision.datasets import MNIST
 from torch.utils.data import DataLoader
 import torchvision.transforms as transforms 
 import torch.nn.functional as F
@@ -13,7 +13,7 @@ class LitCAE(pl.LightningModule):
     def __init__(self):
         super().__init__()
         self.encoder = nn.Sequential(OrderedDict([ 
-            ('conv1', nn.Conv2d(3, 16, 3, padding=1)),
+            ('conv1', nn.Conv2d(1, 16, 3, padding=1)),
             ('leakyrelu', nn.LeakyReLU(negative_slope=0.1, inplace=True)),
             ('pooling1', nn.MaxPool2d(2,2)),
             ('conv2', nn.Conv2d(16, 32, 3, padding=1)),
@@ -23,7 +23,7 @@ class LitCAE(pl.LightningModule):
         self.decoder = nn.Sequential(OrderedDict([ 
             ('conv1', nn.ConvTranspose2d(32, 16, 3, stride=2)),
             ('relu1', nn.LeakyReLU(negative_slope=0.1, inplace=True)),
-            ('conv2', nn.ConvTranspose2d(16, 3, 3, stride=2)),
+            ('conv2', nn.ConvTranspose2d(16, 1, 3, stride=2)),
             # ('relu2', nn.LeakyReLU(negative_slope, inplace=True)),
             ('sigmoid', nn.Sigmoid()),
         ]))
@@ -78,10 +78,10 @@ class ImproveChecker():
 				print("[%s] Not improved from %.4f" % (self.__class__.__name__, self.best_val))
 				return False
 
-dataset = CIFAR10( 
+dataset = MNIST( 
 	root='.',
 	train=True,
-	download=False,
+	download=True,
 	transform=transforms.Compose([ 
 		transforms.ToTensor(),
 		transforms.Normalize((0.1307,), (0.3081,))
