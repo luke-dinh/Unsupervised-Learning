@@ -1,7 +1,8 @@
 import torch
 from torch import nn 
-from torchvision.datasets import MNIST
-from torch.utils.data import DataLoader 
+from torchvision.datasets import CIFAR10
+from torch.utils.data import DataLoader
+from torchvision.datasets.cityscapes import Cityscapes 
 import torchvision.transforms as transforms 
 import torch.nn.functional as F
 from collections import OrderedDict
@@ -77,3 +78,14 @@ class ImproveChecker():
 			else:
 				print("[%s] Not improved from %.4f" % (self.__class__.__name__, self.best_val))
 				return False
+
+dataset = CIFAR10( 
+	root='.',
+	train=True,
+	download=False,
+	transform=transforms.Compose([ 
+		transforms.ToTensor(),
+		transforms.Normalize((0.1307,), (0.3081,))
+	])
+)
+
