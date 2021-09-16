@@ -6,32 +6,47 @@ import torchvision.transforms as transforms
 import torch.nn.functional as F
 from collections import OrderedDict
 import numpy as np
-import os 
+import pytorch_lightning as pl 
 
-# Define model 
-class cae(nn.Module):
 
-    def __init__(self, negative_slope=0.1):
-        super(cae, self).__init__()
-
-        # Encoder
+class LitCAE(pl.LightningModule):
+    def __init__(self):
+        super().__init__()
         self.encoder = nn.Sequential(OrderedDict([ 
             ('conv1', nn.Conv2d(3, 16, 3, padding=1)),
-            ('leakyrelu', nn.LeakyReLU(negative_slope=negative_slope, inplace=True)),
+            ('leakyrelu', nn.LeakyReLU(negative_slope=0.1, inplace=True)),
             ('pooling1', nn.MaxPool2d(2,2)),
             ('conv2', nn.Conv2d(16, 32, 3, padding=1)),
-            ('leakyrelu2', nn.LeakyReLU(negative_slope, inplace=True)),
+            ('leakyrelu2', nn.LeakyReLU(negative_slope=0.1, inplace=True)),
             ('pooling2', nn.MaxPool2d(2,2)),
         ]))
-
-        #Decoder
         self.decoder = nn.Sequential(OrderedDict([ 
             ('conv1', nn.ConvTranspose2d(32, 16, 3, stride=2)),
-            ('relu1', nn.LeakyReLU(negative_slope, inplace=True)),
+            ('relu1', nn.LeakyReLU(negative_slope=0.1, inplace=True)),
             ('conv2', nn.ConvTranspose2d(16, 3, 3, stride=2)),
             # ('relu2', nn.LeakyReLU(negative_slope, inplace=True)),
             ('sigmoid', nn.Sigmoid()),
         ]))
+
+    def forward(self, x):
+        # in lightning, forward defines the prediction/inference actions
+        embedding = self.encoder(x)
+        return embedding
+
+    def training_step(self, batch, batch_idx):
+        # training_step defines the train loop. It is independent of forward
+        x, y = batch
+        x = x.view(x.size(0), -1)
+        z = self.encoder(x)
+        x_hat = self.decoder(z)
+        loss = F.mse_loss(x_hat, x)
+        self.log("train_loss", loss)
+        return loss
+
+    def configure_optimizers(self):
+        optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)
+        return optimizer
+
 
 class ImproveChecker():
 	def __init__(self, mode='min', best_val=None):
