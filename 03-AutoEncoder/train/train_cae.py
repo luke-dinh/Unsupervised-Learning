@@ -6,7 +6,7 @@ import torchvision.transforms as transforms
 import torch.nn.functional as F
 from collections import OrderedDict
 import numpy as np
-import pytorch_lightning as pl 
+import pytorch_lightning as pl
 
 
 class LitCAE(pl.LightningModule):
