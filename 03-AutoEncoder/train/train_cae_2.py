@@ -5,8 +5,7 @@ from torch import nn
 from torchvision.datasets import MNIST
 import torchvision.transforms as transforms
 from torch.utils.data.sampler import SubsetRandomSampler
-
-
+from collections import OrderedDict
 
 def dataset(batch_size):
 
