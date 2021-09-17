@@ -71,3 +71,20 @@ class cae(torch.nn.Module):
             ('layer2', nn.ConvTranspose2d(16, 3, 4, stride=2)),
             ('sigmoid', nn.Sigmoid()),
         ]))
+
+        self._init_weights()
+
+    def _init_weights(self):
+        for m in self.modules():
+            if isinstance(m, nn.Linear):
+                m.weight.data.normal_(0, 0.01)
+                m.bias.data.zero_()
+            elif isinstance(m, nn.BatchNorm2d):
+                m.weight.data.fill_(1)
+                m.bias.data.zero_()
+
+    def forward(self, x):
+        z = self.encoder(x)
+        out = self.decoder(z)
+
+        return out 
