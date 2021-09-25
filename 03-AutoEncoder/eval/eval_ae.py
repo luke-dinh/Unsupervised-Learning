@@ -27,3 +27,11 @@ dataset = MNIST(root=data_dir, train=False, download=True,
                     transforms.ToTensor(),
                     transforms.Normalize((0.1307,),(0.3081))
                 ]))
+
+# Generate Image
+with torch.no_grad():
+    inputs = torch.cat([torch.randn([1,100]) for i in range(32)], dim=0)
+    outputs = model.decoder(inputs)
+    outputs = outputs.view(-1,1,28,28)
+    grid_img = make_grid(outputs.data, nrow=8, normalize=True).cpu().numpy().transpose((1,2,0))
+
