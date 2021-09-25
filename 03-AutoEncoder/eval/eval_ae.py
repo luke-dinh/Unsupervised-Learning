@@ -35,3 +35,8 @@ with torch.no_grad():
     outputs = outputs.view(-1,1,28,28)
     grid_img = make_grid(outputs.data, nrow=8, normalize=True).cpu().numpy().transpose((1,2,0))
 
+plt.figure(figsize=(20,20))
+plt.imshow(grid_img)
+plt.axis('off')
+plt.title('Generated Images from AE')
+plt.show()
