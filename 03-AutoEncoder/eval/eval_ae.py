@@ -16,3 +16,14 @@ from model.ae import AE
 model = AE(in_dims=784, encod_dims=64)
 model.load_state_dict(torch.load(ult_path + '/checkpoint/ae.pth', map_location='cpu')['state_dict'])
 model.eval()
+
+# Dataloader
+data_dir = ult_path + '/datasets'
+
+if not os.path.exists(data_dir):
+    os.makedirs(data_dir)
+dataset = MNIST(root=data_dir, train=False, download=True, 
+                transform=transforms.Compose([ 
+                    transforms.ToTensor(),
+                    transforms.Normalize((0.1307,),(0.3081))
+                ]))
