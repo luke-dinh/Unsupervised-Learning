@@ -9,10 +9,10 @@ from torch.nn.modules.batchnorm import BatchNorm1d
 # Define model
 #------------
 
-class ae(nn.Module):
+class AE(nn.Module):
     def __init__(self, in_dims=784, encod_dims=64, negative_slope=0.1):
 
-        super(ae, self).__init__()
+        super(AE, self).__init__()
 
         # Encoder
         self.encoder = nn.Sequential(OrderedDict([ 
@@ -62,7 +62,7 @@ class ae(nn.Module):
 #------------
 
 if __name__ == "__main__":
-    model = ae(in_dims=784, encod_dims=64, negative_slope=0.1)
+    model = AE(in_dims=784, encod_dims=64, negative_slope=0.1)
     model.eval()
 
     input = torch.rand([1, 784])
