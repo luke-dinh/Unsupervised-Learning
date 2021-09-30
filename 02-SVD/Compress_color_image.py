@@ -20,13 +20,13 @@ def compress_image(image_name):
     img = color_images[image_name]
     org_shape = img.shape
     img_reshape = img.reshape((org_shape[0], org_shape[1] * 3))
-    for k in range(5, 20, 5):
+    for k in range(5, 50, 5):
         img_recon, _ = compress_svd(img_reshape, k)
         img_recon = img_recon.reshape(org_shape)
         compress_ratio = 100.0 * (k*(org_shape[0] + 
                                    org_shape[1]) +k)/(org_shape[0] * org_shape[1])
         
-        plt.title("Compress Ratio: {:,2f}".format(compress_ratio) + "%")
+        plt.title("Compress Ratio: {:.2f}".format(compress_ratio) + "%")
         plt.imshow(img_recon)
         plt.show()
 
