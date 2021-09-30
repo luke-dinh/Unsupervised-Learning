@@ -14,6 +14,7 @@ def compress_svd(image, k):
 
     return recon_matrix, k 
 
+# Compress color image using SVD with reshaped image (From 3 dims H*W*C to 2 dims H*(W*C))
 def compress_image(image_name):
 
     img = color_images[image_name]
