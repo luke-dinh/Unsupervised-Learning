@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 from skimage import data, img_as_float
 
 color_images = { 
-    "cat": np.array(img_as_float(data.chelsea())),
-    "astronaout": np.array(img_as_float(data.astronaut())),
-    "coffee": np.array(img_as_float(data.coffee()))
+    "cat": img_as_float(data.chelsea()),
+    "astronaout": img_as_float(data.astronaut()),
+    "coffee": img_as_float(data.coffee())
 }
 
 def compress_svd(image, k):
