@@ -3,14 +3,14 @@ import matplotlib.pyplot as plt
 from skimage import data, img_as_float
 
 color_images = { 
-    "cat": img_as_float(data.chelsea()),
-    "astronaout": img_as_float(data.astronaut()),
-    "coffee": img_as_float(data.coffee())
+    "cat": np.array(img_as_float(data.chelsea())),
+    "astronaout": np.array(img_as_float(data.astronaut())),
+    "coffee": np.array(img_as_float(data.coffee()))
 }
 
 def compress_svd(image, k):
     U, S, V = np.linalg.svd(image, full_matrices=False)
-    recon_matrix = np.matrix(U[:,:k]) * np.diag(S[:k]) * np.matrix(V[k:, :])
+    recon_matrix = np.dot(U[:,:k], np.dot(np.diag(S[:k]), V[:k,:]))
 
     return recon_matrix, k 
 
@@ -20,8 +20,8 @@ def compress_image(image_name):
     img = color_images[image_name]
     org_shape = img.shape
     img_reshape = img.reshape((org_shape[0], org_shape[1] * 3))
-    for k in range(5, 50, 5):
-        img_recon = compress_svd(img_reshape, k)
+    for k in range(5, 20, 5):
+        img_recon, _ = compress_svd(img_reshape, k)
         img_recon = img_recon.reshape(org_shape)
         compress_ratio = 100.0 * (k*(org_shape[0] + 
                                    org_shape[1]) +k)/(org_shape[0] * org_shape[1])
@@ -30,3 +30,4 @@ def compress_image(image_name):
         plt.imshow(img_recon)
         plt.show()
 
+compress_image("coffee")
