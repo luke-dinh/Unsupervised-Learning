@@ -13,3 +13,9 @@
 * Phương pháp Dimensionality Reduction sử dụng Phân rã ma trận (Matrix Factorization/Decomposition)
 
 * Ý tưởng: biểu diễn 1 ma trận A thành các ma trận nhỏ hown: A = U*S*V.T 
+
+Trong đó:
+
+* U, V là ma trận được tạo bởi 2 hệ trực chuẩn U, V.
+
+* S: ma trận chéo (trong 1 số trường hợp, ma trận S không vuông nhưng vẫn tạm gọi là ma trận chéo).
