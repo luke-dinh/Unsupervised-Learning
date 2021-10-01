@@ -50,6 +50,6 @@ Cho ma trận A bất kì
 
 ## Tài liệu tham khảo:
 
-{https://www.youtube.com/watch?v=mBcLRGuAFUk}
+https://www.youtube.com/watch?v=mBcLRGuAFUk
 
-\href{https://www.youtube.com/watch?v=cOUTpqlX-Xs}
+https://www.youtube.com/watch?v=cOUTpqlX-Xs
