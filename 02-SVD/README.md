@@ -19,3 +19,14 @@ Trong đó:
 * U, V là ma trận được tạo bởi 2 hệ trực chuẩn U, V.
 
 * S: ma trận chéo (trong 1 số trường hợp, ma trận S không vuông nhưng vẫn tạm gọi là ma trận chéo).
+
+## 3. Tính chất của SVD 
+
+* A = U*S*V.T và A.T = V*S*U.T
+
+* A.T*A = V*S*U.T*U*S*V.T
+
+* A.T*A = V*S*S*V.T
+
+* A.T*A*V = V*S*S
+
