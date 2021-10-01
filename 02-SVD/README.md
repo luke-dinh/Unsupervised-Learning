@@ -48,6 +48,12 @@ Cho ma trận A bất kì
 
 * B6: Dùng tính chất (5) ở phần 3, tìm ra U. 
 
+## 5. Ứng dụng 
+
+* Giảm chiều dữ liệu (Image Compression là ví dụ).
+
+* Cơ sở của các phương pháp giảm chiều dữ liệu khác (Truncated SVD, PCA, v.v.).
+
 ## Tài liệu tham khảo:
 
 https://www.youtube.com/watch?v=mBcLRGuAFUk
