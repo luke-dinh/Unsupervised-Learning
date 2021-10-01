@@ -47,3 +47,9 @@ Cho ma trận A bất kì
 * B5: Ứng với \lambda, tìm trị riêng và vector riêng của các ma trận A.T * A - \lambda * I. Từ đó tìm ra các singular vector của V. => Tìm ra V.
 
 * B6: Dùng tính chất (5) ở phần 3, tìm ra U. 
+
+## Tài liệu tham khảo:
+
+\href{https://www.youtube.com/watch?v=mBcLRGuAFUk}
+
+\href{https://www.youtube.com/watch?v=cOUTpqlX-Xs}
