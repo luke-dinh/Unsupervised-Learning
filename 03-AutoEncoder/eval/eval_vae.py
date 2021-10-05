@@ -11,6 +11,32 @@ from model.vae import VAE
 main_path = "/home/lukedinh/Desktop/Unsupervised-Learning/03-AutoEncoder"
 sys.path.append(main_path)
 
+# Load model
 model = VAE(in_dims=784, encod_dims=64)
 model.load_state_dict(torch.load(main_path + '/checkpoint/vae.pth', map_location="cpu")['state_dict'])
 model.eval()
+
+# Dataloader
+data_dir = main_path + '/datasets'
+
+if not os.path.exists(data_dir):
+    os.makedirs(data_dir)
+
+dataset = MNIST(root=data_dir, train=False, download=True, 
+                transform=transforms.Compose([ 
+                    transforms.ToTensor(),
+                    transforms.Normalize((0.1307,),(0.3081))
+                ]))
+
+# Generate Image
+with torch.no_grad():
+    inputs = torch.cat([torch.randn([1,64]) for i in range(32)], dim=0)
+    outputs = model.decoder(inputs)
+    outputs = outputs.view(-1,1,28,28)
+    grid_img = make_grid(outputs.data, nrow=8, normalize=True).cpu().numpy().transpose((1,2,0))
+
+plt.figure(figsize=(20,20))
+plt.imshow(grid_img)
+plt.axis('off')
+plt.title('Generated Images from VAE')
+plt.show()
