@@ -2,13 +2,16 @@ import torch, os
 from torchvision.datasets import MNIST
 from torchvision.utils import make_grid
 import torchvision.transforms as transforms
-
+import argparse
 import matplotlib.pyplot as plt
 import sys
 
 # Change path
-
-main_path = "/home/lukedinh/Desktop/Unsupervised-Learning/03-AutoEncoder"
+parser = argparse.ArgumentParser(description="VAE Evaluation")
+parser.add_argument("--main_path", default="/home/lukedinh/Desktop/Unsupervised-Learning/03-AutoEncoder", 
+                        type=str, help="Define main path")
+opt = parser.parse_args()
+main_path = opt.main_path
 sys.path.append(main_path)
 
 # Load model
