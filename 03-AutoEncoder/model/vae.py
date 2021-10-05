@@ -22,7 +22,7 @@ class VAE(nn.Module):
             ('relu3', nn.LeakyReLU(negative_slope, inplace=True)),
          ]))
 
-        self.fc_muy = nn.Linear(128, encod_dims)
+        self.fc_mu = nn.Linear(128, encod_dims)
         self.fc_var = nn.Linear(128, encod_dims)
 
         # Decoder
@@ -52,8 +52,8 @@ class VAE(nn.Module):
 
     def represent(self, x):
         h = self.encoder(x)
-        muy, logvar = self.fc_muy(h), self.fc_var(h)
-        z = self._reparameterize(muy, logvar)
+        mu, logvar = self.fc_mu(h), self.fc_var(h)
+        z = self._reparameterize(mu, logvar)
         return z 
 
     def _reparameterize(self, muy, logvar):
@@ -66,11 +66,11 @@ class VAE(nn.Module):
         if self.training:
 
             h = self.encoder(x)
-            muy, logvar = self.fc_muy(h), self.fc_var(h)
-            z = self._reparameterize(muy, logvar)
+            mu, logvar = self.fc_muy(h), self.fc_var(h)
+            z = self._reparameterize(mu, logvar)
             y = self.decoder(z)
 
-            return y, muy, logvar 
+            return y, mu, logvar 
 
         else:
             z = self.represent(x)
