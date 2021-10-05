@@ -6,11 +6,11 @@ import torch.nn.functional as F
 
 # Define model
 
-class vae(nn.Module):
+class VAE(nn.Module):
 
     def __init__(self, in_dims=784, encod_dims=64, negative_slope=0.1):
 
-        super(vae, self).__init__()
+        super(VAE, self).__init__()
         # Encoder
 
         self.encoder = nn.Sequential(OrderedDict([ 
@@ -81,7 +81,7 @@ class vae(nn.Module):
 # Test 
 
 if __name__ == "__main__":
-    model = vae(in_dims=784, encod_dims=64, negative_slope=0.1)
+    model = VAE(in_dims=784, encod_dims=64, negative_slope=0.1)
     model.eval()
 
     input = torch.randn([1, 784])
