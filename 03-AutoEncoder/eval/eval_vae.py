@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import sys
 
 # Change path
+
 parser = argparse.ArgumentParser(description="VAE Evaluation")
 parser.add_argument("--main_path", default="/home/lukedinh/Desktop/Unsupervised-Learning/03-AutoEncoder", 
                         type=str, help="Define main path")
