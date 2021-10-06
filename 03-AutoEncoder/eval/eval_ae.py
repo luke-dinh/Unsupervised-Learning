@@ -7,6 +7,15 @@ import matplotlib.pyplot as plt
 import sys
 import argparse
 
+parser = argparse.ArgumentParser(description= "AE Evaluation")
+parser.add_argument( 
+    "--main_path",
+    default="/home/lukedinh/Desktop/Unsupervised-Learning/03-AutoEncoder",
+    type=str,
+    help="Define main path"
+)
+
+
 # Change this path based on your filepath
 
 ult_path = '/home/lukedinh/Desktop/Unsupervised-Learning/03-AutoEncoder'
