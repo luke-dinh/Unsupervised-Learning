@@ -14,11 +14,10 @@ parser.add_argument(
     type=str,
     help="Define main path"
 )
-
+opt = parser.parse_args()
+ult_path = opt.main_path
 
 # Change this path based on your filepath
-
-ult_path = '/home/lukedinh/Desktop/Unsupervised-Learning/03-AutoEncoder'
 sys.path.append(ult_path)
 from model.ae import AE 
 
