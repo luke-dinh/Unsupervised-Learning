@@ -1,13 +1,14 @@
 import torch, os
 from torchvision.datasets import MNIST
 from torchvision.utils import make_grid
-from torch.utils.data import DataLoader 
 import torchvision.transforms as transforms
 
 import matplotlib.pyplot as plt
 import sys
+import argparse
 
 # Change this path based on your filepath
+
 ult_path = '/home/lukedinh/Desktop/Unsupervised-Learning/03-AutoEncoder'
 sys.path.append(ult_path)
 from model.ae import AE 
