@@ -11,3 +11,6 @@ parser.add_argument(
     help="Path to your folder"
 )
 opt = parser.parse_args()
+main_path = opt.main_path
+sys.path.append(main_path)
+
