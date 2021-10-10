@@ -14,7 +14,7 @@ parser.add_argument(
     type=str,
     help="Path to your folder"
 )
-parser.add_argument("--save_weight", 
+parser.add_argument("--save_path", 
                     default="/home/lukedinh/Desktop/Unsupervised-Learning/03-AutoEncoder/checkpoint",
                     type=str,
                     help="Path to save weights")
@@ -62,7 +62,7 @@ class ImproveChecker():
 # Dataset
 
 train_data = MNIST( 
-    root='.',
+    root=main_path,
     train=True,
     download=True,
     transform=transforms.Compose([ 
@@ -94,11 +94,13 @@ for epoch in range(1,n_epochs+1):
     for data in train_loader:
 
         images, _ = data
+        flatten_img = images.view(images.shape[0], -1)
 
         ## Create noisy data
         noisy_img = images + noise_factor * torch.randn(*images.shape)
         # Clip the images in range 0,1
         noisy_img = np.clip(noisy_img, 0. , 1.)
+        noisy_img = noisy_img.view(noisy_img.shape[0], -1)
 
         # Train
         # Clear all of the gradients
@@ -106,13 +108,13 @@ for epoch in range(1,n_epochs+1):
         # Forward pass
         outputs = model(noisy_img)
         # Loss function
-        loss = loss_fn(outputs, images)
+        loss = loss_fn(outputs, flatten_img)
         # Backpropagation
         loss.backward()
         optimizer.step()
 
-    	# ImproveChecker
-	print("[EPOCH %.3d] Loss: %.6f" % (epoch, loss.item()))
+    # ImproveChecker
+	# print("[Epoch %.3d] Loss: %.6f" % (epoch, loss.item()))
     if improve_checker.check(loss.item()):
         checkpoint = dict( 
             epoch=epoch,
@@ -122,4 +124,4 @@ for epoch in range(1,n_epochs+1):
         )
         save_file = os.path.join(save_path, "denoise_ae.pth")
         torch.save(checkpoint, save_file)
-        
+     
