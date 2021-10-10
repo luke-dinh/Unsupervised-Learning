@@ -14,8 +14,14 @@ parser.add_argument(
     type=str,
     help="Path to your folder"
 )
+parser.add_argument("--save_weight", 
+                    default="/home/lukedinh/Desktop/Unsupervised-Learning/03-AutoEncoder/checkpoint",
+                    type=str,
+                    help="Path to save weights")
+
 opt = parser.parse_args()
 main_path = opt.main_path
+save_path = opt.save_path
 sys.path.append(main_path)
 
 # Load model
@@ -78,4 +84,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 improve_checker = ImproveChecker(mode='min')
 
 # Training
+
+n_epochs = 20
+noise_factor = 0.4
 
