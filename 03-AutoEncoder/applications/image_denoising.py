@@ -1,6 +1,6 @@
 import argparse
 from torch.utils.data import DataLoader
-import sys
+import sys, os
 import torch.nn.functional as F
 from torchvision.datasets import MNIST
 import torchvision.transforms as transforms
@@ -120,4 +120,5 @@ for epoch in range(1,n_epochs+1):
             stae_dict=model.state_dict(),
             optimizer = optimizer.state_dict(), 
         )
+        save_file = os.path.join(save_path, "denoise_ae.pth")
         
