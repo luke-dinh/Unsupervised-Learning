@@ -88,3 +88,25 @@ improve_checker = ImproveChecker(mode='min')
 n_epochs = 20
 noise_factor = 0.4
 
+model.train()
+for i in range(1,n_epochs+1):
+
+    for data in train_loader:
+
+        images, _ = data
+
+        ## Create noisy data
+        noisy_img = images + noise_factor * torch.randn(*images.shape)
+        # Clip the images in range 0,1
+        noisy_img = np.clip(noisy_img, 0. , 1.)
+
+        # Train
+        # Clear all of the gradients
+        optimizer.zero_grad() 
+        # Forward pass
+        outputs = model(noisy_img)
+        # Loss function
+        loss = loss_fn(outputs, images)
+        # Backpropagation
+        loss.backward()
+        optimizer.step()
