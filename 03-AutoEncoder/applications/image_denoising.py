@@ -1,6 +1,9 @@
 import argparse
-import torch
+from torch.utils.data import DataLoader
 import sys
+import torch.nn.functional as F
+from torchvision.datasets import MNIST
+import torchvision.transforms as transforms
 
 parser = argparse.ArgumentParser("Denoising Images using AE")
 parser.add_argument( 
@@ -17,6 +20,11 @@ sys.path.append(main_path)
 from model.ae import AE
 model = AE(in_dims=784, encod_dims=64)
 
+# Loss Function
+def loss_fn(output_x, x):
+    return F.mse_loss(output_x, x)
+
+# Checker
 class ImproveChecker():
 	def __init__(self, mode='min', best_val=None):
 		assert mode in ['min', 'max']
@@ -46,3 +54,17 @@ class ImproveChecker():
 			else:
 				print("[%s] Not improved from %.4f" % (self.__class__.__name__, self.best_val))
 				return False
+
+# Dataset
+
+train_data = MNIST( 
+    root='.',
+    train=True,
+    download=True,
+    transform=transforms.Compose([ 
+        transforms.ToTensor(),
+        transforms.Normalize((0.137,), (0.226,))
+    ])
+)
+
+train_loader = DataLoader(dataset=train_data, batch_size=64, num_workers=4, shuffle=True)
