@@ -4,6 +4,8 @@ import sys
 import torch.nn.functional as F
 from torchvision.datasets import MNIST
 import torchvision.transforms as transforms
+import torch 
+import numpy as np
 
 parser = argparse.ArgumentParser("Denoising Images using AE")
 parser.add_argument( 
@@ -19,10 +21,6 @@ sys.path.append(main_path)
 # Load model
 from model.ae import AE
 model = AE(in_dims=784, encod_dims=64)
-
-# Loss Function
-def loss_fn(output_x, x):
-    return F.mse_loss(output_x, x)
 
 # Checker
 class ImproveChecker():
@@ -68,3 +66,16 @@ train_data = MNIST(
 )
 
 train_loader = DataLoader(dataset=train_data, batch_size=64, num_workers=4, shuffle=True)
+
+# Loss Function
+def loss_fn(output_x, x):
+    return F.mse_loss(output_x, x)
+
+# Optimizer 
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+
+# Improve Checker
+improve_checker = ImproveChecker(mode='min')
+
+# Training
+
