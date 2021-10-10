@@ -89,7 +89,7 @@ n_epochs = 20
 noise_factor = 0.4
 
 model.train()
-for i in range(1,n_epochs+1):
+for epoch in range(1,n_epochs+1):
 
     for data in train_loader:
 
@@ -110,3 +110,14 @@ for i in range(1,n_epochs+1):
         # Backpropagation
         loss.backward()
         optimizer.step()
+
+    	# ImproveChecker
+	print("[EPOCH %.3d] Loss: %.6f" % (epoch, loss.item()))
+    if improve_checker.check(loss.item()):
+        checkpoint = dict( 
+            epoch=epoch,
+            loss = loss.item(),
+            stae_dict=model.state_dict(),
+            optimizer = optimizer.state_dict(), 
+        )
+        
