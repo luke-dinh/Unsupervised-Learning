@@ -18,13 +18,16 @@ parser.add_argument("--save_path",
                     default="/home/lukedinh/Desktop/Unsupervised-Learning/03-AutoEncoder/checkpoint",
                     type=str,
                     help="Path to save weights")
+parser.add_argument("--batch_size", default=64, type=int, help="Batch size")
 
 opt = parser.parse_args()
 main_path = opt.main_path
 save_path = opt.save_path
-sys.path.append(main_path)
+batch_size = opt.batch_size
 
+sys.path.append(main_path)
 # Load model
+
 from model.ae import AE
 model = AE(in_dims=784, encod_dims=64)
 
@@ -71,7 +74,7 @@ train_data = MNIST(
     ])
 )
 
-train_loader = DataLoader(dataset=train_data, batch_size=64, num_workers=4, shuffle=True)
+train_loader = DataLoader(dataset=train_data, batch_size=batch_size, num_workers=4, shuffle=True)
 
 # Loss Function
 def loss_fn(output_x, x):
