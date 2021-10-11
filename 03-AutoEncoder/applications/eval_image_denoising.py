@@ -17,3 +17,10 @@ parser.add_argument(
 opt = parser.parse_args()
 main_path = opt.main_path
 sys.path.append(main_path)
+
+# Load model
+from model.ae import AE
+
+model = AE(in_dims=784, encod_dims=64)
+model.load_state_dict(torch.load(main_path + "/checkpoint/denoise_ae.pth", map_location="cpu")["state_dict"])
+model.eval()
