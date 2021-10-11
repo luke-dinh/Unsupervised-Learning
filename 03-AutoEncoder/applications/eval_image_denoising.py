@@ -1,6 +1,7 @@
 import argparse
 import os, sys
 import numpy as np
+from numpy.core.defchararray import mod
 
 import torch 
 from torchvision.datasets import MNIST
@@ -15,10 +16,12 @@ parser.add_argument(
     help="Your main path"
 )
 parser.add_argument("--batch_size", default=64, type=int, help="Batch size")
+parser.add_argument("--noise_factor", default=0.4, type=float, help="Noise factor")
 
 opt = parser.parse_args()
 main_path = opt.main_path
 batch_size=opt.batch_size
+noise_factor = opt.noise_factor
 
 sys.path.append(main_path)
 # Load model
@@ -39,3 +42,13 @@ test_data = MNIST(
     ]))
 
 test_loader = DataLoader(test_data, batch_size=batch_size, num_workers=4)
+
+dataiter = iter(test_loader)
+images, labels = dataiter.next()
+
+# Evaluate
+noisy_img = images + noise_factor *torch.randn(*images.shape)
+noisy_img = np.clip(noisy_img, 0., 1.)
+noisy_img = noisy_img.view(noisy_img.shape[0], -1)
+
+outputs= model(noisy_img)
