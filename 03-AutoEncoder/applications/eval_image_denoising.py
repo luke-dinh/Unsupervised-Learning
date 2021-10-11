@@ -14,10 +14,13 @@ parser.add_argument(
     type=str,
     help="Your main path"
 )
+parser.add_argument("--batch_size", default=64, type=int, help="Batch size")
+
 opt = parser.parse_args()
 main_path = opt.main_path
-sys.path.append(main_path)
+batch_size=opt.batch_size
 
+sys.path.append(main_path)
 # Load model
 from model.ae import AE
 
@@ -32,5 +35,7 @@ test_data = MNIST(
     download=True, 
     transform= transforms.Compose([ 
         transforms.ToTensor(),
-        transforms.Normalize((0.137, ), (0.229, ))
+        transforms.Normalize((0.137, ), (0.226, ))
     ]))
+
+test_loader = DataLoader(test_data, batch_size=batch_size, num_workers=4)
