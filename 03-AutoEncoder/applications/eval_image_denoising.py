@@ -24,3 +24,13 @@ from model.ae import AE
 model = AE(in_dims=784, encod_dims=64)
 model.load_state_dict(torch.load(main_path + "/checkpoint/denoise_ae.pth", map_location="cpu")["state_dict"])
 model.eval()
+
+# Load dataset
+
+test_data = MNIST( 
+    root=main_path, train=False,
+    download=True, 
+    transform= transforms.Compose([ 
+        transforms.ToTensor(),
+        transforms.Normalize((0.137, ), (0.229, ))
+    ]))
