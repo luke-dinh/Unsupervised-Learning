@@ -1,7 +1,7 @@
 import argparse
-import os, sys
+import sys
 import numpy as np
-from numpy.core.defchararray import mod
+import matplotlib.pyplot as plt
 
 import torch 
 from torchvision.datasets import MNIST
@@ -28,7 +28,7 @@ sys.path.append(main_path)
 from model.ae import AE
 
 model = AE(in_dims=784, encod_dims=64)
-model.load_state_dict(torch.load(main_path + "/checkpoint/denoise_ae.pth", map_location="cpu")["state_dict"])
+model.load_state_dict(torch.load(main_path + "/checkpoint/denoise_ae.pth", map_location="cpu")['state_dict'])
 model.eval()
 
 # Load dataset
@@ -47,8 +47,21 @@ dataiter = iter(test_loader)
 images, labels = dataiter.next()
 
 # Evaluate
-noisy_img = images + noise_factor *torch.randn(*images.shape)
-noisy_img = np.clip(noisy_img, 0., 1.)
+org_noisy_img = images + noise_factor *torch.randn(*images.shape)
+noisy_img = np.clip(org_noisy_img, 0., 1.)
 noisy_img = noisy_img.view(noisy_img.shape[0], -1)
 
 outputs= model(noisy_img)
+outputs = outputs.view(-1, 1, 28, 28)
+outputs = outputs.detach().numpy()
+org_noisy_img = org_noisy_img.numpy()
+
+# Visualize
+
+fig, axes = plt.subplots(nrows=2, ncols=10, sharex=True, sharey=True, figsize=(25,4))
+
+for noisy_img, row in zip([org_noisy_img, outputs], axes):
+    for img, ax in zip(org_noisy_img, row):
+        ax.imshow(np.squeeze(img), cmap="gray")
+        ax.get_xaxis().set_visible(False)
+        ax.get_yaxis().set_visible(False)

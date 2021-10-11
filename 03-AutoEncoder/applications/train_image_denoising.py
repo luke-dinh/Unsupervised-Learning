@@ -122,7 +122,7 @@ for epoch in range(1,n_epochs+1):
         checkpoint = dict( 
             epoch=epoch,
             loss = loss.item(),
-            stae_dict=model.state_dict(),
+            state_dict=model.state_dict(),
             optimizer = optimizer.state_dict(), 
         )
         save_file = os.path.join(save_path, "denoise_ae.pth")
