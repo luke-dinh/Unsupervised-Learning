@@ -114,7 +114,7 @@ for epoch in range(1,n_epochs+1):
         optimizer.step()
 
     # ImproveChecker
-	# print("[Epoch %.3d] Loss: %.6f" % (epoch, loss.item()))
+    print("[Epoch %.3d] Loss: %.6f" % (epoch,loss.item()))
     if improve_checker.check(loss.item()):
         checkpoint = dict( 
             epoch=epoch,
