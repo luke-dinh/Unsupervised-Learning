@@ -7,6 +7,7 @@ import torch
 from torchvision.datasets import MNIST
 from torch.utils.data import DataLoader 
 import torchvision.transforms as transforms
+from torchvision.utils import make_grid
 
 parser = argparse.ArgumentParser("Image Denoising Evaluation")
 parser.add_argument( 
@@ -28,7 +29,7 @@ sys.path.append(main_path)
 from model.ae import AE
 
 model = AE(in_dims=784, encod_dims=64)
-model.load_state_dict(torch.load(main_path + "/checkpoint/denoise_ae.pth", map_location="cpu")['state_dict'])
+model.load_state_dict(torch.load(main_path + "/checkpoint/denoise_ae.pth", map_location="cpu")['stae_dict'])
 model.eval()
 
 # Load dataset
@@ -61,7 +62,15 @@ org_noisy_img = org_noisy_img.numpy()
 fig, axes = plt.subplots(nrows=2, ncols=10, sharex=True, sharey=True, figsize=(25,4))
 
 for noisy_img, row in zip([org_noisy_img, outputs], axes):
-    for img, ax in zip(org_noisy_img, row):
+    for img, ax in zip(noisy_img, row):
         ax.imshow(np.squeeze(img), cmap="gray")
         ax.get_xaxis().set_visible(False)
         ax.get_yaxis().set_visible(False)
+
+# grid_img = make_grid(outputs.data, nrow=8, normalize=True).cpu().numpy().transpose((1,2,0))
+
+# plt.figure(figsize=(15,8))
+# plt.imshow(grid_img)
+# plt.axis("off")
+# plt.title("Images after denoising")
+plt.show()
