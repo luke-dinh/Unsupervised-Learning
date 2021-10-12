@@ -10,7 +10,7 @@ from torch.nn.modules.batchnorm import BatchNorm1d
 #------------
 
 class AE(nn.Module):
-    def __init__(self, in_dims=784, encod_dims=64, negative_slope=0.1):
+    def __init__(self, in_dims=784, encod_dims=100, negative_slope=0.1):
 
         super(AE, self).__init__()
 

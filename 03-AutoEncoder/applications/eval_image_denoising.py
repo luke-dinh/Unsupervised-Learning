@@ -53,7 +53,7 @@ noisy_img = np.clip(org_noisy_img, 0., 1.)
 noisy_img = noisy_img.view(noisy_img.shape[0], -1)
 
 outputs= model(noisy_img)
-outputs = outputs.view(-1, 1, 28, 28)
+outputs = outputs.view(batch_size, 1, 28, 28)
 outputs = outputs.detach().numpy()
 org_noisy_img = org_noisy_img.numpy()
 
