@@ -29,7 +29,7 @@ sys.path.append(main_path)
 # Load model
 
 from model.ae import AE
-model = AE(in_dims=784, encod_dims=64)
+model = AE(in_dims=784, encod_dims=100)
 
 # Checker
 class ImproveChecker():
