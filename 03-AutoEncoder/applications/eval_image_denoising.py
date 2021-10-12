@@ -29,7 +29,7 @@ sys.path.append(main_path)
 from model.ae import AE
 
 model = AE(in_dims=784, encod_dims=100)
-model.load_state_dict(torch.load(main_path + "/checkpoint/denoise_ae.pth", map_location="cpu")['stae_dict'])
+model.load_state_dict(torch.load(main_path + "/checkpoint/denoise_ae.pth", map_location="cpu")['state_dict'])
 model.eval()
 
 # Load dataset
