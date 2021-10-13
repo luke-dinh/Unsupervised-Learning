@@ -10,7 +10,7 @@ import numpy as np
 parser = argparse.ArgumentParser("Denoising Images using AE")
 parser.add_argument( 
     "--main_path",
-    default="/home/lukedinh/Desktop/Unsupervised-Learning/03-AutoEncoder",
+    default="/home/lukedinh/Desktop/Unsupervised-Learning/04-AutoEncoder",
     type=str,
     help="Path to your folder"
 )

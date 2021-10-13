@@ -12,7 +12,7 @@ from torchvision.utils import make_grid
 parser = argparse.ArgumentParser("Image Denoising Evaluation")
 parser.add_argument( 
     "--main_path",
-    default="/home/lukedinh/Desktop/Unsupervised-Learning/03-AutoEncoder",
+    default="/home/lukedinh/Desktop/Unsupervised-Learning/04-AutoEncoder",
     type=str,
     help="Your main path"
 )
