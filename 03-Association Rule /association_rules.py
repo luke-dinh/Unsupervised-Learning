@@ -11,4 +11,11 @@ import apyori
 # ]
 
 # import data
-store_data = pd.read_csv("Online Retail.xlsx", headre=None)
+store_data = pd.read_csv("store_data.csv", headre=None)
+
+# Preprocessing
+records = []
+for i in range(0, 7501):
+    records.append([str(store_data.values[i,j]) for j in range(0,20)])
+
+
