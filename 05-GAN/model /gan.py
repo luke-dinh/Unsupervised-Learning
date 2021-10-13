@@ -2,12 +2,13 @@ from keras import optimizers
 from keras.datasets import mnist 
 from keras.utils import np_utils
 from keras.models import Sequential
-from keras.layers import Dense, Dropout, Flatten, LeakyReLU
+from keras.layers import Dense, Dropout, Flatten, LeakyReLU, Input
 from keras.optimizers import Adam, RMSprop
 
 import numpy as np
 import matplotlib.pyplot as plt
-import random 
+import random
+from tensorflow.python.keras.engine.training import Model 
 from tqdm import tqdm_notebook
 
 # Dataset
@@ -41,3 +42,11 @@ d.add(Dense(256, activation=LeakyReLU(alpha=0.1)))
 
 d.add(Dense(1, activation='sigmoid'))
 d.compile(loss='binary_crossentropy', metrics=['accuracy'], optimizer='adam')
+
+d.trainable = False 
+inputs = Input(shape=(z_dim, ))
+hidden = g(inputs)
+outputs = d(hidden)
+
+gan = Model(inputs, outputs)
+gan.compile(loss='binary_crossentropy', metrics=['accuracy'], optimizer='adam')
