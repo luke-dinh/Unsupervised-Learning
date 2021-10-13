@@ -31,5 +31,13 @@ g.add(Dense(512, activation=LeakyReLU(alpha=0.1)))
 g.add(Dense(1024, activation=LeakyReLU(alpha=0.1)))
 
 g.add(Dense(784, activation='sigmoid'))
-g.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+g.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
+# Discriminator
+d = Sequential()
+d.add(Dense(1024, input_dim=784, activation=LeakyReLU(alpha=0.1)))
+d.add(Dense(521, activation=LeakyReLU(alpha=0.1)))
+d.add(Dense(256, activation=LeakyReLU(alpha=0.1)))
+
+d.add(Dense(1, activation='sigmoid'))
+d.compile(loss='binary_crossentropy', metrics=['accuracy'], optimizer='adam')
