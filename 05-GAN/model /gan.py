@@ -1,52 +1,54 @@
-from keras import optimizers
-from keras.datasets import mnist 
-from keras.utils import np_utils
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Flatten, LeakyReLU, Input
-from keras.optimizers import Adam, RMSprop
-
-import numpy as np
-import matplotlib.pyplot as plt
-import random
-from tensorflow.python.keras.engine.training import Model 
-from tqdm import tqdm_notebook
-
-# Dataset
-(x_train, y_train), (x_test, y_test) = mnist.load_data()
-
-x_train = x_train.reshape(60000, 784)
-x_train = x_train.astype('float32')/255.0
-
-x_test = x_test.reshape(10000, 784)
-x_test = x_test.reshape(10000, 784)
+from tensorflow.python.keras.layers.advanced_activations import LeakyReLU
+import torch 
+from torch import nn
+import torch.nn.functional as F
+from collections import OrderedDict
 
 # Model
+class GAN_model(nn.Module):
 
-z_dim = 100
-loss = Adam(learning_rate=1e-3, beta_1=0.5)
+    def __init__(self, inp_dim=784, z_dim=100, negative_slope=0.1):
 
-# Generator
-g = Sequential()
-g.add(Dense(256, input_dim=z_dim, activation=LeakyReLU(alpha=0.1)))
-g.add(Dense(512, activation=LeakyReLU(alpha=0.1)))
-g.add(Dense(1024, activation=LeakyReLU(alpha=0.1)))
+        super(GAN_model, self).__init__()
 
-g.add(Dense(784, activation='sigmoid'))
-g.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+        # Generator
+        self.generator = nn.Sequential(OrderedDict([ 
+            ('layre1', nn.Linear(z_dim, 256)),
+            ('relu1', nn.LeakyReLU(negative_slope=negative_slope, inplace=True)),
+            ('layer2', nn.Linear(256, 512)),
+            ('relu2', nn.LeakyReLU(negative_slope, inplace=True)),
+            ('layer3', nn.Linear(512, 1024)),
+            ('relu3', nn,LeakyReLU(negative_slope, inplace=True)),
+            ('layer4', nn.Linear(1024, inp_dim)),
+            ('sigmoid', nn.Sigmoid())
+        ]))
 
-# Discriminator
-d = Sequential()
-d.add(Dense(1024, input_dim=784, activation=LeakyReLU(alpha=0.1)))
-d.add(Dense(521, activation=LeakyReLU(alpha=0.1)))
-d.add(Dense(256, activation=LeakyReLU(alpha=0.1)))
+        self.discriminator = nn.Sequential(OrderedDict([ 
+            ('layer1', nn.Linear(inp_dim, 1024)),
+            ('relu1', nn.LeakyReLU(negative_slope, inplace=True)),
+            ('layer2', nn.Linear(1024, 512)),
+            ('relu2', nn.LeakyReLU(negative_slope, inplace=True)),
+            ('layer3', nn.Linear(512, 256)),
+            ('relu3', nn.LeakyReLU(negative_slope, inplace=True)),
+            ('layer4', nn.Linear(256, 1)),
+            ('sigmoid', nn.Sigmoid())
+        ]))
 
-d.add(Dense(1, activation='sigmoid'))
-d.compile(loss='binary_crossentropy', metrics=['accuracy'], optimizer='adam')
+        self._init_weights()
 
-d.trainable = False 
-inputs = Input(shape=(z_dim, ))
-hidden = g(inputs)
-outputs = d(hidden)
+    def forward(self, x):
 
-gan = Model(inputs, outputs)
-gan.compile(loss='binary_crossentropy', metrics=['accuracy'], optimizer='adam')
+        gen = self.generator(x)
+        out = self.discriminator(gen)
+
+        return gen, out
+
+    def _init_weights(self): 
+
+        for m in self.modules():
+            if isinstance(m, nn.Linear):
+                m.weight.data.normal_(0,0.01)
+                m.bias.data.zero_()
+            elif isinstance(m, nn.BatchNorm2d):
+                m.weight.data.fill_(1)
+                m.bias.data.zero_()
