@@ -17,7 +17,7 @@ class GAN_model(nn.Module):
             ('layer2', nn.Linear(256, 512)),
             ('relu2', nn.LeakyReLU(negative_slope, inplace=True)),
             ('layer3', nn.Linear(512, 1024)),
-            ('relu3', nn,LeakyReLU(negative_slope, inplace=True)),
+            ('relu3', nn.LeakyReLU(negative_slope, inplace=True)),
             ('layer4', nn.Linear(1024, inp_dim)),
             ('sigmoid', nn.Sigmoid())
         ]))
@@ -51,3 +51,15 @@ class GAN_model(nn.Module):
             elif isinstance(m, nn.BatchNorm2d):
                 m.weight.data.fill_(1)
                 m.bias.data.zero_()
+
+# Test
+
+if __name__=="__main__":
+    model = GAN_model()
+    model.eval()
+    inputs = torch.randn([1, 100])
+    res_g_block = model.generator(inputs)
+    res_dis_block = model.discriminator(res_g_block)
+
+    print(res_g_block.shape)
+    print(res_dis_block.shape)
