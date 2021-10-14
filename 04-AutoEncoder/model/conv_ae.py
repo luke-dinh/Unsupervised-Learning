@@ -24,9 +24,9 @@ class conv_ae(nn.Module):
 
         # Decoder
         self.decoder = nn.Sequential(OrderedDict([ 
-            ('layer1', nn.ConvTranspose2d(32, 16, 4, stride=2)),
+            ('layer1', nn.ConvTranspose2d(32, 16, 2, stride=2)),
             ('relu1', nn.LeakyReLU(negative_slope, inplace=True)),
-            ('layer2', nn.ConvTranspose2d(16, 1, 4, stride=2)),
+            ('layer2', nn.ConvTranspose2d(16, 1, 2, stride=2)),
             ('sigmoid', nn.Sigmoid()),
         ]))
 

@@ -26,9 +26,9 @@ noise_factor = opt.noise_factor
 
 sys.path.append(main_path)
 # Load model
-from model.ae import AE
+from model.conv_ae import conv_ae
 
-model = AE(in_dims=784, encod_dims=100)
+model = conv_ae()
 model.load_state_dict(torch.load(main_path + "/checkpoint/denoise_ae.pth", map_location="cpu")['state_dict'])
 model.eval()
 
@@ -50,10 +50,10 @@ images, labels = dataiter.next()
 # Evaluate
 org_noisy_img = images + noise_factor *torch.randn(*images.shape)
 noisy_img = np.clip(org_noisy_img, 0., 1.)
-noisy_img = noisy_img.view(noisy_img.shape[0], -1)
+# noisy_img = noisy_img.view(noisy_img.shape[0], -1)
 
 outputs= model(noisy_img)
-outputs = outputs.view(batch_size, 1, 28, 28)
+# outputs = outputs.view(batch_size, 1, 28, 28)
 outputs = outputs.detach().numpy()
 org_noisy_img = org_noisy_img.numpy()
 

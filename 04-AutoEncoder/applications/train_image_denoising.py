@@ -15,7 +15,7 @@ parser.add_argument(
     help="Path to your folder"
 )
 parser.add_argument("--save_path", 
-                    default="/home/lukedinh/Desktop/Unsupervised-Learning/03-AutoEncoder/checkpoint",
+                    default="/home/lukedinh/Desktop/Unsupervised-Learning/04-AutoEncoder/checkpoint",
                     type=str,
                     help="Path to save weights")
 parser.add_argument("--batch_size", default=64, type=int, help="Batch size")
@@ -28,8 +28,8 @@ batch_size = opt.batch_size
 sys.path.append(main_path)
 # Load model
 
-from model.ae import AE
-model = AE(in_dims=784, encod_dims=100)
+from model.conv_ae import conv_ae
+model = conv_ae(negative_slope=0.1)
 
 # Checker
 class ImproveChecker():
@@ -97,13 +97,13 @@ for epoch in range(1,n_epochs+1):
     for data in train_loader:
 
         images, _ = data
-        flatten_img = images.view(images.shape[0], -1)
+        # flatten_img = images.view(images.shape[0], -1)
 
         ## Create noisy data
         noisy_img = images + noise_factor * torch.randn(*images.shape)
         # Clip the images in range 0,1
         noisy_img = np.clip(noisy_img, 0. , 1.)
-        noisy_img = noisy_img.view(noisy_img.shape[0], -1)
+        # noisy_img = noisy_img.view(noisy_img.shape[0], -1)
 
         # Train
         # Clear all of the gradients
@@ -111,7 +111,7 @@ for epoch in range(1,n_epochs+1):
         # Forward pass
         outputs = model(noisy_img)
         # Loss function
-        loss = loss_fn(outputs, flatten_img)
+        loss = loss_fn(outputs, images)
         # Backpropagation
         loss.backward()
         optimizer.step()
