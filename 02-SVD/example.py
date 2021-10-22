@@ -25,3 +25,42 @@ new_img = scaling(gray_image)
 U, S, V = np.linalg.svd(new_img, full_matrices=False)
 S = np.diag(S)
 imgSVD = np.dot(U, np.dot(S, V))
+
+# plt.subplot(1,2,1)
+# plt.title("Original Image")
+# plt.imshow(new_img, cmap="gray")
+
+# plt.subplot(1,2,2)
+# plt.title("SVD Image")
+# plt.imshow(imgSVD, cmap="gray")
+
+# plt.show()
+
+# b. SVD with rank 1
+rank_1_image = None
+row = int(new_img.shape[0])
+col = int(new_img.shape[1])
+
+u_1 = np.reshape(U[:,0], (row, 1))
+s_1 = S[0,0]
+v_1 = np.reshape(V[0,:], (1, col))
+
+rank_1_image = np.dot(U, S*V)
+
+# plt.title("Rank 1 Image")
+# plt.imshow(rank_1_image, cmap="gray")
+# plt.show()
+
+# c. Best rank:
+rank20image = None
+rank20image = np.zeros(np.shape(new_img))
+
+for i in range(20):
+    u20 = np.reshape(U[:,i], (row, 1))
+    s20 = S[i,i]
+    v20 = np.reshape(V[i,:], (1, col))
+    rank20image += np.dot(u20, s20*v20)
+
+plt.title("Rank 20 Image")
+plt.imshow(rank20image, cmap="gray")
+plt.show()
