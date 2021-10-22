@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import imageio
 
 #a. read the image
-img1 = imageio.imread("HW0/image1.jpg")
+img1 = imageio.imread("image1.jpg")
 
 def rgb2gray(image):
     return 0.299*image[0] + 0.587*image[1] + 0.114*image[2]
