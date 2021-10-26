@@ -10,12 +10,12 @@ import numpy as np
 parser = argparse.ArgumentParser("Denoising Images using AE")
 parser.add_argument( 
     "--main_path",
-    default="/home/lukedinh/Desktop/Unsupervised-Learning/04-AutoEncoder",
+    default="04-AutoEncoder",
     type=str,
     help="Path to your folder"
 )
 parser.add_argument("--save_path", 
-                    default="/home/lukedinh/Desktop/Unsupervised-Learning/04-AutoEncoder/checkpoint",
+                    default="04-AutoEncoder/checkpoint",
                     type=str,
                     help="Path to save weights")
 parser.add_argument("--batch_size", default=64, type=int, help="Batch size")
