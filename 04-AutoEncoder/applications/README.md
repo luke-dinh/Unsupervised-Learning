@@ -2,3 +2,16 @@
 
 ### 1. Image Noise.
 
+<p align = "center">
+  <img src = "https://user-images.githubusercontent.com/51883796/139589910-7f120861-4faf-4190-b032-50a791cf0523.png">
+</p>
+
+<p align = "center">
+  <img src = "https://user-images.githubusercontent.com/51883796/139589930-bd502f0f-a0bc-42a9-993a-d5f7de00ca02.png">
+</p>
+
+### 2. REDNet for better performance
+
+<p align = "center">
+  <img src = "https://user-images.githubusercontent.com/51883796/139589968-d1a08bc4-5d5b-466e-afe0-7581ca424f9f.png">
+</p>
