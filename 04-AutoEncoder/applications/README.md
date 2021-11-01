@@ -7,6 +7,10 @@
 </p>
 
 <p align = "center">
+  <img src = "https://user-images.githubusercontent.com/51883796/139641369-13c1a8af-5d53-44a2-9151-35ba2a3a1bf3.png">
+</p>
+
+<p align = "center">
   <img src = "https://user-images.githubusercontent.com/51883796/139589930-bd502f0f-a0bc-42a9-993a-d5f7de00ca02.png">
 </p>
 
