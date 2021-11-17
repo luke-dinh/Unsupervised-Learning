@@ -2,9 +2,6 @@ import torch
 import torch.nn as nn
 import argparse
 
-from torch.nn.modules.activation import LeakyReLU
-from torch.nn.modules.conv import ConvTranspose2d
-
 # Args parser
 parser = argparse.ArgumentParser("DCGAN Implementation")
 
