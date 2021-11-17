@@ -87,4 +87,16 @@ class discriminator(nn.Module):
             nn.Conv2d(feature_map * 2, feature_map * 4, kernel_size=4, stride=2, padding=1, bias=False),
             nn.BatchNorm2d(feature_map * 4),
             nn.LeakyReLU(neg_slope, inplace=True),
+
+            # Forth block
+            nn.Conv2d(feature_map * 4, feature_map * 8, kernel_size=4, stride=2, padding=1, bias=False),
+            nn.BatchNorm2d(feature_map * 8),
+            nn.LeakyReLU(neg_slope, inplace=True),
+
+            # Final block
+            nn.Conv2d(feature_map * 8, 1, kernel_size=4, stride=1, padding=0, bias=False),
+            nn.Sigmoid()
         )
+
+    def forward(self, x):
+        return self.discriminator(x)
