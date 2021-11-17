@@ -23,12 +23,13 @@ neg_slope = opt.negative_slope
 
 class generator(nn.Module):
 
-    def __init__(self, input_dim, feature_map, neg_slope, n_gpu):
+    def __init__(self, input_dim, feature_map, num_channels, neg_slope, n_gpu):
         super(generator, self).__init__()
 
         self.n_gpu = n_gpu
         self.input_dim = input_dim
         self.feature_map = feature_map
+        self.num_channels = num_channels
         self.neg_slope = neg_slope
 
         self.generator = nn.Sequential( 
@@ -53,5 +54,10 @@ class generator(nn.Module):
             nn.BatchNorm2d(feature_map),
             nn.LeakyReLU(neg_slope),
 
-            
+            # Final block
+            nn.ConvTranspose2d(feature_map, num_channels, kernel_size=4, stride=2, padding=1, bias=False),
+            nn.Tanh()
         )
+
+    def forward(self, x):
+        return self.generator(x)
