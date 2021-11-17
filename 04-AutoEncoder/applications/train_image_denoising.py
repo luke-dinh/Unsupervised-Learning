@@ -28,7 +28,7 @@ batch_size = opt.batch_size
 sys.path.append(main_path)
 # Load model
 
-from model.conv_ae import conv_ae
+from applications.model.conv_ae import conv_ae
 model = conv_ae(negative_slope=0.1)
 
 # Checker
