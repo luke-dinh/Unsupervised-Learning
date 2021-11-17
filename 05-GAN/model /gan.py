@@ -4,11 +4,11 @@ import torch.nn.functional as F
 from collections import OrderedDict
 
 # Model
-class GAN_model(nn.Module):
+class Generator(nn.Module):
 
     def __init__(self, inp_dim=784, z_dim=100, negative_slope=0.1):
 
-        super(GAN_model, self).__init__()
+        super(Generator, self).__init__()
 
         # Generator
         self.generator = nn.Sequential(OrderedDict([ 
@@ -21,6 +21,11 @@ class GAN_model(nn.Module):
             ('layer4', nn.Linear(1024, inp_dim)),
             ('sigmoid', nn.Sigmoid())
         ]))
+
+class Discriminator(nn.Module):
+
+    def ___init__(self, inp_dim, z_dim, negative_slope):
+        super(Discriminator, self).__init__()
 
         self.discriminator = nn.Sequential(OrderedDict([ 
             ('layer1', nn.Linear(inp_dim, 1024)),
@@ -54,12 +59,12 @@ class GAN_model(nn.Module):
 
 # Test
 
-if __name__=="__main__":
-    model = GAN_model()
-    model.eval()
-    inputs = torch.randn([1, 100])
-    res_g_block = model.generator(inputs)
-    res_dis_block = model.discriminator(res_g_block)
+# if __name__=="__main__":
+#     model = GAN_model()
+#     model.eval()
+#     inputs = torch.randn([1, 100])
+#     res_g_block = model.generator(inputs)
+#     res_dis_block = model.discriminator(res_g_block)
 
-    print(res_g_block.shape)
-    print(res_dis_block.shape)
+#     print(res_g_block.shape)
+#     print(res_dis_block.shape)
