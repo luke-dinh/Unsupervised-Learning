@@ -22,6 +22,20 @@ class Generator(nn.Module):
             ('sigmoid', nn.Sigmoid())
         ]))
 
+    def forward(self, x):
+        return self.Generator(x)
+
+    def _init_weights(self): 
+
+        for m in self.modules():
+            if isinstance(m, nn.Linear):
+                m.weight.data.normal_(0,0.01)
+                m.bias.data.zero_()
+            elif isinstance(m, nn.BatchNorm2d):
+                m.weight.data.fill_(1)
+                m.bias.data.zero_()
+
+
 class Discriminator(nn.Module):
 
     def ___init__(self, inp_dim, z_dim, negative_slope):
@@ -41,11 +55,9 @@ class Discriminator(nn.Module):
         self._init_weights()
 
     def forward(self, x):
+        out = self.Discriminator(x)
 
-        gen = self.generator(x)
-        out = self.discriminator(gen)
-
-        return gen, out
+        return out
 
     def _init_weights(self): 
 
