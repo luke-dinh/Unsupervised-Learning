@@ -37,21 +37,21 @@ class generator(nn.Module):
             # First Block
             nn.ConvTranspose2d(input_dim, feature_map * 8, kernel_size=4, stride=1, padding=0, bias=False),
             nn.BatchNorm2d(feature_map * 8),
-            nn.LeakyReLU(neg_slope),
+            nn.LeakyReLU(neg_slope, inplace=True),
 
             # Second Block
             nn.ConvTranspose2d(feature_map * 8, feature_map *4, kernel_size=4, stride=2, padding=1, bias=False),
             nn.BatchNorm2d(feature_map * 4),
-            nn.LeakyReLU(neg_slope),
+            nn.LeakyReLU(neg_slope, inplace=True),
 
             # Third Block
             nn.ConvTranspose2d(feature_map * 4, feature_map * 2, kernel_size=4, stride=2, padding=1, bias=False),
             nn.BatchNorm2d(feature_map * 2),
-            nn.LeakyReLU(neg_slope),
+            nn.LeakyReLU(neg_slope, inplace=True),
 
             # Forth block
             nn.ConvTranspose2d(feature_map * 2, feature_map, kernel_size=4, stride=2, padding=1, bias=False),
-            nn.BatchNorm2d(feature_map),
+            nn.BatchNorm2d(feature_map, inplace=True),
             nn.LeakyReLU(neg_slope),
 
             # Final block
@@ -61,3 +61,15 @@ class generator(nn.Module):
 
     def forward(self, x):
         return self.generator(x)
+
+class discriminator(nn.Module):
+
+    def __init__(self, num_channels, feature_map, neg_slope, n_gpu):
+        super(discriminator, self).__init__()
+
+        self.num_channels = num_channels
+        self.feature_map = feature_map
+        self.neg_slope = neg_slope
+        self.n_gpu = n_gpu
+
+        
