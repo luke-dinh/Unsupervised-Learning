@@ -72,4 +72,19 @@ class discriminator(nn.Module):
         self.neg_slope = neg_slope
         self.n_gpu = n_gpu
 
-        
+        self.discriminator = nn.Sequential( 
+
+            # First block
+            nn.Conv2d(num_channels, feature_map, kernel_size=4, stride=2, padding=1, bias=False),
+            nn.LeakyReLU(neg_slope, inplace=True),
+
+            # Second block
+            nn.Conv2d(feature_map, feature_map * 2, kernel_size=4, stride=2, padding=1, bias=False),
+            nn.BatchNorm2d(feature_map * 2),
+            nn.LeakyReLU(neg_slope, inplace=True),
+
+            # Third block
+            nn.Conv2d(feature_map * 2, feature_map * 4, kernel_size=4, stride=2, padding=1, bias=False),
+            nn.BatchNorm2d(feature_map * 4),
+            nn.LeakyReLU(neg_slope, inplace=True),
+        )
