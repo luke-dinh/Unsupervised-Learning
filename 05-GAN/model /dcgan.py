@@ -3,6 +3,7 @@ import torch.nn as nn
 import argparse
 
 from torch.nn.modules.activation import LeakyReLU
+from torch.nn.modules.conv import ConvTranspose2d
 
 # Args parser
 parser = argparse.ArgumentParser("DCGAN Implementation")
@@ -31,8 +32,26 @@ class generator(nn.Module):
         self.neg_slope = neg_slope
 
         self.generator = nn.Sequential( 
+
             # First Block
             nn.ConvTranspose2d(input_dim, feature_map * 8, kernel_size=4, stride=1, padding=0, bias=False),
             nn.BatchNorm2d(feature_map * 8),
-            nn.LeakyReLU(neg_slope)
+            nn.LeakyReLU(neg_slope),
+
+            # Second Block
+            nn.ConvTranspose2d(feature_map * 8, feature_map *4, kernel_size=4, stride=2, padding=1, bias=False),
+            nn.BatchNorm2d(feature_map * 4),
+            nn.LeakyReLU(neg_slope),
+
+            # Third Block
+            nn.ConvTranspose2d(feature_map * 4, feature_map * 2, kernel_size=4, stride=2, padding=1, bias=False),
+            nn.BatchNorm2d(feature_map * 2),
+            nn.LeakyReLU(neg_slope),
+
+            # Forth block
+            nn.ConvTranspose2d(feature_map * 2, feature_map, kernel_size=4, stride=2, padding=1, bias=False),
+            nn.BatchNorm2d(feature_map),
+            nn.LeakyReLU(neg_slope),
+
+            
         )
