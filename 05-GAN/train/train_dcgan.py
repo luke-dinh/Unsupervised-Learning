@@ -17,4 +17,5 @@ main_path = opt.main_path
 num_epochs = opt.num_epochs
 n_gpu = opt.n_gpu
 
-from model import dcgan 
+from model.dcgan import *
+ 
