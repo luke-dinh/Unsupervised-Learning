@@ -10,10 +10,16 @@ parser.add_argument("--z_dim", type=int, default=784, help="Input size of G")
 parser.add_argument("--neg_slope", type=float, default=0.1, help="Negative slope of ReLU")
 parser.add_argument("n_gpu", type=int, default=0, help="Number of GPUs for training")
 
+opt = parser.parse_args()
+inp_dim = opt.input_dim
+z_dim = opt.z_dim
+neg_slope = opt.neg_slope
+n_gpu = opt.n_gpu
+
 # Model
 class Generator(nn.Module):
 
-    def __init__(self, inp_dim=784, z_dim=100, negative_slope=0.1):
+    def __init__(self, inp_dim, z_dim, neg_slope):
 
         super(Generator, self).__init__()
 
