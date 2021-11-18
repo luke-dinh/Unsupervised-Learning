@@ -22,9 +22,12 @@ class Generator(nn.Module):
     def __init__(self, inp_dim, z_dim, neg_slope):
 
         super(Generator, self).__init__()
+        self.inp_dim = inp_dim
+        self.z_dim = z_dim
+        self.neg_slope = neg_slope 
 
         # Generator
-        self.generator = nn.Sequential(OrderedDict([ 
+        self.Generator = nn.Sequential(OrderedDict([ 
             ('layre1', nn.Linear(z_dim, 256)),
             ('relu1', nn.LeakyReLU(negative_slope=neg_slope, inplace=True)),
             ('layer2', nn.Linear(256, 512)),
@@ -34,6 +37,8 @@ class Generator(nn.Module):
             ('layer4', nn.Linear(1024, inp_dim)),
             ('sigmoid', nn.Sigmoid())
         ]))
+
+        self._init_weights()
 
     def forward(self, x):
         return self.Generator(x)
@@ -51,16 +56,18 @@ class Generator(nn.Module):
 
 class Discriminator(nn.Module):
 
-    def ___init__(self, inp_dim, z_dim, negative_slope):
+    def ___init__(self, inp_dim, z_dim, neg_slope):
         super(Discriminator, self).__init__()
+        self.inp_dim = inp_dim 
+        self.neg_slope = neg_slope 
 
-        self.discriminator = nn.Sequential(OrderedDict([ 
+        self.Discriminator = nn.Sequential(OrderedDict([ 
             ('layer1', nn.Linear(inp_dim, 1024)),
-            ('relu1', nn.LeakyReLU(negative_slope, inplace=True)),
+            ('relu1', nn.LeakyReLU(neg_slope, inplace=True)),
             ('layer2', nn.Linear(1024, 512)),
-            ('relu2', nn.LeakyReLU(negative_slope, inplace=True)),
+            ('relu2', nn.LeakyReLU(neg_slope, inplace=True)),
             ('layer3', nn.Linear(512, 256)),
-            ('relu3', nn.LeakyReLU(negative_slope, inplace=True)),
+            ('relu3', nn.LeakyReLU(neg_slope, inplace=True)),
             ('layer4', nn.Linear(256, 1)),
             ('sigmoid', nn.Sigmoid())
         ]))
