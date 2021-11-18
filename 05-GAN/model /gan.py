@@ -2,6 +2,12 @@ import torch
 from torch import nn
 import torch.nn.functional as F
 from collections import OrderedDict
+import argparse
+
+parser = argparse.ArgumentParser("GAN model")
+parser.add_argument("--input_dim", tyoe=int, default=784, help="Input size of D")
+parser.add_argument("--z_dim", type=int, default=784, help="Input size of G")
+parser.add_argument("--neg_slope", type=float, default=0.1, help="Negative slope of ReLU")
 
 # Model
 class Generator(nn.Module):
