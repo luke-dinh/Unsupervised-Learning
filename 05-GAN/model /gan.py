@@ -8,6 +8,7 @@ parser = argparse.ArgumentParser("GAN model")
 parser.add_argument("--input_dim", tyoe=int, default=784, help="Input size of D")
 parser.add_argument("--z_dim", type=int, default=784, help="Input size of G")
 parser.add_argument("--neg_slope", type=float, default=0.1, help="Negative slope of ReLU")
+parser.add_argument("n_gpu", type=int, default=0, help="Number of GPUs for training")
 
 # Model
 class Generator(nn.Module):
