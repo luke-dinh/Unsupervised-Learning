@@ -26,11 +26,11 @@ class Generator(nn.Module):
         # Generator
         self.generator = nn.Sequential(OrderedDict([ 
             ('layre1', nn.Linear(z_dim, 256)),
-            ('relu1', nn.LeakyReLU(negative_slope=negative_slope, inplace=True)),
+            ('relu1', nn.LeakyReLU(negative_slope=neg_slope, inplace=True)),
             ('layer2', nn.Linear(256, 512)),
-            ('relu2', nn.LeakyReLU(negative_slope, inplace=True)),
+            ('relu2', nn.LeakyReLU(neg_slope, inplace=True)),
             ('layer3', nn.Linear(512, 1024)),
-            ('relu3', nn.LeakyReLU(negative_slope, inplace=True)),
+            ('relu3', nn.LeakyReLU(neg_slope, inplace=True)),
             ('layer4', nn.Linear(1024, inp_dim)),
             ('sigmoid', nn.Sigmoid())
         ]))
