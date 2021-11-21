@@ -119,3 +119,16 @@ for epoch in range(num_epochs):
         ############################
         # (2) Update G network: maximize log(D(G(z)))
         ###########################
+        generator.zero_grad()
+        label.fill_(real_label)
+        # Perform another forward pass of all-fake batch through D
+
+        otuput = discriminator(fake_G).view(-1)
+        # G loss
+        error_G = criterion(output, label)
+        # Calculate gradients
+        error_G.backward()
+        D_G_z2 = output.mean().item()
+
+        # Update G
+        optimG.step()
