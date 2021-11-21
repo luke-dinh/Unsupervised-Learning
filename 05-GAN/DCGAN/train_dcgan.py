@@ -8,7 +8,7 @@ import torchvision.utils as vutils
 import argparse
 
 parser = argparse.ArgumentParser("Train DCGAN")
-parser.add_argument("--main_path", type=str, default="05-GAN", help="Main Path")
+parser.add_argument("--main_path", type=str, default="05-GAN/DCGAN", help="Main Path")
 parser.add_argument("--num_epochs", type=int, default=5, help="Number of epochs for training")
 parser.add_argument("--n_gpu", type=int, default=0, help="Number of GPUs for training")
 parser.add_argument("--num_channels", default=3, type=int, help="Number of channels")
