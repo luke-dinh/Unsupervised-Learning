@@ -68,3 +68,46 @@ dataset = CIFAR10(
 )
 
 dataloader = DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True, num_workers=4)
+
+# training
+img_list = []
+G_loss = []
+D_loss = []
+iters = 0
+
+for epoch in range(num_epochs):
+
+    # For each batch in DataLoader
+    for i, data in enumerate(DataLoader, 0):
+
+        ############################
+        # (1) Update D network: maximize log(D(x)) + log(1 - D(G(z)))
+        ###########################
+        ## Train with all-real batch
+        discriminator.zero_grad()
+        # Format batch
+        real_cpu = data[0].to(device)
+        b_size = real_cpu.size(0)
+        label = torch.full((b_size,), real_label, dtype=torch.float, device=device)
+
+        # Forward pass to D
+        output = discriminator(real_cpu).view(-1)
+        # Calculate loss
+        error_D_real = criterion(output, label)
+        # Upgrade gradient
+        error_D_real.backward()
+        D_x = output.mean().item()
+
+        ## Train with all-fake batch
+        # Generate batch of latent vectors
+        noise = torch.randn(b_size, input_dim, 1, 1, device=device)
+        # Generate fake images
+        fake_G = generator(noise)
+        label.fill_(fake_label)
+        # Classify fake batch with D
+        output = discriminator(fake_G.detach()).view(-1)
+        error_D_fake = criterion(output, label)
+        error_D_fake.backward()
+        D_G_z1 = output.mean().item()
+        
+        
