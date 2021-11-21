@@ -115,3 +115,7 @@ for epoch in range(num_epochs):
 
         # Update D
         optimD.step()
+
+        ############################
+        # (2) Update G network: maximize log(D(G(z)))
+        ###########################
