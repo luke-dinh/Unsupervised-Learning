@@ -16,7 +16,7 @@ parser.add_argument("--input_dim", default=100, type=int, help="Number of dimens
 parser.add_argument("--feature_map", default=32, type=int, help="Size of feature maps")
 parser.add_argument("--negative_slope", type=float, default=0.01, help="Negative slope parameter for LeakyReLU")
 parser.add_argument("--lr", type=float, default=0.01, help="Learning rate for optimizer")
-parser.add_argument("--batch_size", type=int, default=32, help="Batch size")
+parser.add_argument("--batch_size", type=int, default=128, help="Batch size")
 
 opt = parser.parse_args()
 
@@ -68,7 +68,7 @@ dataset = CIFAR10(
     ])
 )
 
-dataloader = DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True, num_workers=4)
+dataloader = DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True, num_workers=2)
 
 # training
 img_list = []
@@ -79,7 +79,7 @@ iters = 0
 for epoch in range(num_epochs):
 
     # For each batch in DataLoader
-    for i, data in enumerate(DataLoader, 0):
+    for i, data in enumerate(dataloader, 0):
 
         ############################
         # (1) Update D network: maximize log(D(x)) + log(1 - D(G(z)))
@@ -142,7 +142,7 @@ for epoch in range(num_epochs):
         G_loss.append(error_G.item())
         D_loss.append(error_D.item())
 
-        if (iters % 500 == 0) or ((epoch == num_epochs - 1) and (i == len(DataLoader) - 1)):
+        if (iters % 500 == 0) or ((epoch == num_epochs - 1) and (i == len(dataloader) - 1)):
             with torch.no_grad():
                 fake = generator(fixed_noise).detach().cpu()
             img_list.append(vutils.make_grid(fake, padding=2, normalize=True))
