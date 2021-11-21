@@ -110,4 +110,8 @@ for epoch in range(num_epochs):
         error_D_fake.backward()
         D_G_z1 = output.mean().item()
         
-        
+        # Maximize the loss 
+        error_D = error_D_real + error_D_fake
+
+        # Update D
+        optimD.step()
