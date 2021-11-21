@@ -145,4 +145,6 @@ for epoch in range(num_epochs):
         if (iters % 500 == 0) or ((epoch == num_epochs - 1) and (i == len(DataLoader) - 1)):
             with torch.no_grad():
                 fake = generator(fixed_noise).detach().cpu()
-            img_list.append()
+            img_list.append(vutils.make_grid(fake, padding=2, normalize=True))
+
+        iters +=1
