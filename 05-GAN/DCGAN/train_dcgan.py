@@ -4,7 +4,6 @@ import torch.nn as nn
 from torchvision.datasets import CIFAR10
 from torch.utils.data import DataLoader
 import torchvision.transforms as transforms
-from torchvision.transforms.transforms import CenterCrop, Resize
 import torchvision.utils as vutils
 import argparse
 
