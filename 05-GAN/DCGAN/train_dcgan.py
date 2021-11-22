@@ -4,6 +4,7 @@ import torch.nn as nn
 from torchvision.datasets import CIFAR10
 from torch.utils.data import DataLoader
 import torchvision.transforms as transforms
+from torchvision.transforms.transforms import CenterCrop, Resize
 import torchvision.utils as vutils
 import argparse
 
@@ -63,6 +64,8 @@ dataset = CIFAR10(
     train=True,
     download=True,
     transform=transforms.Compose([ 
+        transforms.Resize(64),
+        transforms.CenterCrop(64),
         transforms.ToTensor(),
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ])
@@ -124,7 +127,7 @@ for epoch in range(num_epochs):
         label.fill_(real_label)
         # Perform another forward pass of all-fake batch through D
 
-        otuput = discriminator(fake_G).view(-1)
+        output = discriminator(fake_G).view(-1)
         # G loss
         error_G = criterion(output, label)
         # Calculate gradients
