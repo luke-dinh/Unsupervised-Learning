@@ -34,7 +34,7 @@ n_gpu = opt.n_gpu
 dataset = MNIST(root=main_path, train=True, download=True,
                 transform=transforms.Compose([ 
                     transforms.ToTensor(),
-                    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+                    transforms.Normalize((0.5,), (0.5,))
                 ]))
 
 dataloader = DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True, num_workers=4)
