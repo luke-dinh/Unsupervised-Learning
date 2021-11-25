@@ -1,6 +1,7 @@
 import sys
 import argparse
 import torch
+from torch import optim
 import torch.nn as nn
 from torchvision.datasets import MNIST
 import torchvision.transforms as transforms
@@ -102,4 +103,17 @@ for epoch in range(num_epochs):
         label.fill_(fake_label)
 
         # 3. Classify fake batch
-        
+        output = d(fake_data_cpu.detach()).view(-1)
+        error_D_fake = criterion(output,label)
+        error_D_fake.backward()
+        D_z = output.mean().item()
+
+        # 4. Loss from D
+        error_D = error_D_real + error_D_fake
+
+        # 5. Update D
+        optimD.step()
+
+        ############################
+        # (2) Update G network: maximize log(D(G(z)))
+        ###########################
