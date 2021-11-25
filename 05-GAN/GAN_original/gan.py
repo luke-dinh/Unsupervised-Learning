@@ -56,7 +56,7 @@ class Generator(nn.Module):
 
 class Discriminator(nn.Module):
 
-    def ___init__(self, inp_dim, z_dim, neg_slope):
+    def ___init__(self, inp_dim, neg_slope):
         super(Discriminator, self).__init__()
         self.inp_dim = inp_dim 
         self.neg_slope = neg_slope 
