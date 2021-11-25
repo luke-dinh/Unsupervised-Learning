@@ -125,7 +125,6 @@ for epoch in range(num_epochs):
         generator.zero_grad()
         label.fill_(real_label)
         # Perform another forward pass of all-fake batch through D
-
         output = discriminator(fake_G).view(-1)
         # G loss
         error_G = criterion(output, label)

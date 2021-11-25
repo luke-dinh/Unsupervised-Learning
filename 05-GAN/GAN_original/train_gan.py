@@ -106,7 +106,7 @@ for epoch in range(num_epochs):
         output = d(fake_data_cpu.detach()).view(-1)
         error_D_fake = criterion(output,label)
         error_D_fake.backward()
-        D_z = output.mean().item()
+        D_G_z1 = output.mean().item()
 
         # 4. Loss from D
         error_D = error_D_real + error_D_fake
@@ -117,3 +117,18 @@ for epoch in range(num_epochs):
         ############################
         # (2) Update G network: maximize log(D(G(z)))
         ###########################
+        g.zero_grad()
+
+        ## 1. Load the data to G
+        label.fill_(real_label)
+
+        # 2. Perform another forward pass of all-fake batch through D
+        output = d(fake_data_cpu).view(-1)
+
+        # 3. Loss
+        error_G = criterion(output, label)
+        error_G.backward()
+        D_G_z2 = output.mean().item()
+
+        # 4. Update G
+        optimG.step()
