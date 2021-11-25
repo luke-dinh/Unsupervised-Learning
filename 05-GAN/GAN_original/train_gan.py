@@ -42,7 +42,19 @@ dataloader = DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True, nu
 sys.path.append(main_path)
 from gan import Generator, Discriminator
 
-device = torch.device("cpu")
+if n_gpu != 0:
+    device = torch.device("gpu")
+else:
+    device = torch.device("cpu")
+    
 g = Generator(input_dim, z_dim, neg_slope).to(device)
 d = Discriminator(input_dim, neg_slope).to(device)
 
+# Training
+
+## 1. Define losses
+criterion = nn.BCELoss()
+
+## Create batch of latent vectors that we will use to visualize
+## the progression of the generator
+fixed_noise = torch.randn(28, input_dim, 1, 1, device=device)
