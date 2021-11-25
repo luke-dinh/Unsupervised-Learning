@@ -46,7 +46,7 @@ if n_gpu != 0:
     device = torch.device("gpu")
 else:
     device = torch.device("cpu")
-    
+
 g = Generator(input_dim, z_dim, neg_slope).to(device)
 d = Discriminator(input_dim, neg_slope).to(device)
 
@@ -55,6 +55,51 @@ d = Discriminator(input_dim, neg_slope).to(device)
 ## 1. Define losses
 criterion = nn.BCELoss()
 
-## Create batch of latent vectors that we will use to visualize
+## 2. Create batch of latent vectors that we will use to visualize
 ## the progression of the generator
 fixed_noise = torch.randn(28, input_dim, 1, 1, device=device)
+
+## 3. Establish real and fake labels for training
+real_label = 1
+fake_label = 0
+
+## 4. Setup Adam optimizer for G and D
+optimG = torch.optim.Adam(g.parameters(), lr=lr, betas=(0.5, 0.999))
+optimD = torch.optim.Adam(d.parameters(), lr=lr, betas=(0.5, 0.999))
+
+## 5. Training
+img_list = []
+g_loss = []
+d_loss = []
+iters = 0
+
+for epoch in range(num_epochs):
+
+    for i, data in enumerate(dataloader, 0):
+
+        ############################
+        # (1) Update D network: maximize log(D(x)) + log(1 - D(G(z)))
+        ###########################
+        ## Train with all-real batch
+        d.zero_grad()
+        # Format batch
+
+        real_data_cpu = data[0].to(device)
+        b_size = real_data_cpu.size(0)
+        label = torch.full((b_size, ), real_label, dtype=torch.float, device=device)
+
+        # Load the data to D
+        ## 1. Classify real data
+        output = d(real_data_cpu).view(-1)
+        error_D_real = criterion(output, label)
+        error_D_real.backward()
+        D_x = output.mean().item()
+
+        ## 2. Discriminate the data from G (Train with all fake batch)
+        noise = torch.randn(b_size, input_dim, 1, 1, device=device)
+        # Generate fake images
+        fake_data_cpu = g(noise)
+        label.fill_(fake_label)
+
+        # 3. Classify fake batch
+        
