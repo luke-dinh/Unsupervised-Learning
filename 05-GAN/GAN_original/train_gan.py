@@ -40,9 +40,9 @@ dataloader = DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True, nu
 
 # Load the model
 sys.path.append(main_path)
-from gan import *
+from gan import Generator, Discriminator
 
 device = torch.device("cpu")
-g = gan.Generator(input_dim, z_dim, neg_slope).to(device)
-d = gan.Discriminator(input_dim, neg_slope).to(device)
+g = Generator(input_dim, z_dim, neg_slope).to(device)
+d = Discriminator(input_dim, neg_slope).to(device)
 
