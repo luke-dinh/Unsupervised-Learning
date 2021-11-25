@@ -28,3 +28,14 @@ batch_size = opt.batch_size
 main_path = opt.main_path
 num_epochs = opt.num_epochs
 n_gpu = opt.n_gpu
+
+# Dataset
+
+dataset = MNIST(root=main_path, train=True, download=True,
+                transform=transforms.Compose([ 
+                    transforms.ToTensor(),
+                    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+                ]))
+
+dataloader = DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True, num_workers=4)
+
