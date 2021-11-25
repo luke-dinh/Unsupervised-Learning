@@ -76,7 +76,7 @@ iters = 0
 
 for epoch in range(num_epochs):
 
-    for i, data in enumerate(dataloader, 0):
+    for i, (data, _) in enumerate(dataloader):
 
         ############################
         # (1) Update D network: maximize log(D(x)) + log(1 - D(G(z)))
@@ -84,8 +84,8 @@ for epoch in range(num_epochs):
         ## Train with all-real batch
         d.zero_grad()
         # Format batch
-
-        real_data_cpu = data[0].to(device)
+        inp = data.view(data.shape[0], -1)
+        real_data_cpu = inp.to(device)
         b_size = real_data_cpu.size(0)
         label = torch.full((b_size, ), real_label, dtype=torch.float, device=device)
 
