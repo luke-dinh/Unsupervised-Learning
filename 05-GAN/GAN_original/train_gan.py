@@ -132,3 +132,18 @@ for epoch in range(num_epochs):
 
         # 4. Update G
         optimG.step()
+
+        if i % 50 == 0:
+            print('[%d/%d][%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
+                  % (epoch, num_epochs, i, len(dataloader),
+                     error_D.item(), error_G.item(), D_x, D_G_z1, D_G_z2))
+
+        G_loss.append(error_G.item())
+        D_loss.append(error_D.item())
+
+        if (iters % 500 == 0) or ((epoch == num_epochs - 1) and (i == len(dataloader) - 1)):
+            with torch.no_grad():
+                fake = generator(fixed_noise).detach().cpu()
+            img_list.append(vutils.make_grid(fake, padding=2, normalize=True))
+
+        iters +=1
