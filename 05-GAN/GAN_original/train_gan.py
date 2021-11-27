@@ -97,7 +97,7 @@ for epoch in range(num_epochs):
         D_x = output.mean().item()
 
         ## 2. Discriminate the data from G (Train with all fake batch)
-        noise = torch.randn(b_size, input_dim, 1, 1, device=device)
+        noise = torch.randint(size = (int(b_size), int(z_dim)), device=device)
         # Generate fake images
         fake_data_cpu = g(noise)
         label.fill_(fake_label)
