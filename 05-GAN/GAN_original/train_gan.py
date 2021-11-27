@@ -138,8 +138,8 @@ for epoch in range(num_epochs):
                   % (epoch, num_epochs, i, len(dataloader),
                      error_D.item(), error_G.item(), D_x, D_G_z1, D_G_z2))
 
-        G_loss.append(error_G.item())
-        D_loss.append(error_D.item())
+        g_loss.append(error_G.item())
+        d_loss.append(error_D.item())
 
         if (iters % 500 == 0) or ((epoch == num_epochs - 1) and (i == len(dataloader) - 1)):
             with torch.no_grad():
