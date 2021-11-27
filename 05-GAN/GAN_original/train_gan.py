@@ -1,7 +1,7 @@
 import sys
 import argparse
 import torch
-from torch import optim
+import torchvision.utils as vutils
 import torch.nn as nn
 from torchvision.datasets import MNIST
 import torchvision.transforms as transforms
@@ -143,7 +143,7 @@ for epoch in range(num_epochs):
 
         if (iters % 500 == 0) or ((epoch == num_epochs - 1) and (i == len(dataloader) - 1)):
             with torch.no_grad():
-                fake = generator(fixed_noise).detach().cpu()
+                fake = g(fixed_noise).detach().cpu()
             img_list.append(vutils.make_grid(fake, padding=2, normalize=True))
 
         iters +=1
